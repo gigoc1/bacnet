@@ -67,6 +67,10 @@ dcc:
 epics:
 	$(MAKE) -s -C apps $@
 
+.PHONY: epics_own
+epics_own:
+	$(MAKE) -s -C apps $@	
+
 .PHONY: error
 error:
 	$(MAKE) -s -C apps $@

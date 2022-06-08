@@ -134,7 +134,7 @@ endif
 .EXPORT_ALL_VARIABLES:
 
 SUBDIRS = lib readprop writeprop readfile writefile reinit server dcc \
-	whohas whois iam ucov scov timesync epics readpropm readrange \
+	whohas whois iam ucov scov timesync epics epics_own readpropm readrange \
 	writepropm uptransfer getevent uevent abort error event ack-alarm \
 	server-client
 
@@ -187,6 +187,10 @@ dcc: $(BACNET_LIB_TARGET)
 
 .PHONY: epics
 epics: $(BACNET_LIB_TARGET)
+	$(MAKE) -b -C $@
+
+.PHONY: epics_own
+epics_own: $(BACNET_LIB_TARGET)
 	$(MAKE) -b -C $@
 
 .PHONY: error

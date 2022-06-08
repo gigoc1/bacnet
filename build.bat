@@ -1,19 +1,18 @@
 @echo off
 echo Build with MinGW32 and MSYS: mingw.sourceforge.net
-set PATH=C:\MinGW\msys\1.0\bin;C:\MinGW\bin;%PATH%
+rem set PATH=C:\MinGW\msys\1.0\bin;C:\MinGW\bin;%PATH%
 rem assumes rm, cp, size are already in path
-set CC=mingw32-gcc.exe
-set AR=mingw32-gcc-ar.exe
-set NM=mingw32-gcc-nm.exe
-set NM=mingw32-gcc-nm.exe
+set CC=gcc.exe
+set AR=ar.exe
+set NM=nm.exe
 set OBJCOPY=objcopy.exe
 set SIZE=size.exe
 set MAKE=mingw32-make.exe
 
-doskey make = mingw32-make.exe $*
+rem doskey make = mingw32-make.exe $*
 
-make BACNET_PORT=win32 clean
-make BACNET_PORT=win32 BUILD=release clean all
+mingw32-make BACNET_PORT=win32 clean
+mingw32-make BACNET_PORT=win32 BUILD=debug readprop
 
 rem Build for MinGW debug
 rem make BACNET_PORT=win32 BUILD=debug clean all

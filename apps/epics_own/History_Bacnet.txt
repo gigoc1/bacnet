@@ -1,0 +1,25 @@
+1. Get heading response 이후에는
+  - RPM_new data = true, invoke logical = true
+    Err_detected =false, Has_rpm = true
+2. Get all response 이후에는
+  - RPM_new data = false, invoke logical = false
+    Err_detected = true, Has_rpm = true, Last err code = null
+2-1. Has_rpm은 RPM 서비스가 있으면 true
+3. Get list of all response
+  - RPM_new data = false, invoke logical = false
+    Err_detected = true, Has_rpm = true, Last err code = null
+4. GET_PROPERTY_REQUEST
+  - myObjet의 propertylist 할당
+  - "Has_RPM"=false 등의 조건이면 required/optional 리스트만 추가
+  - 변수 "prop"에 "Property_list"를 할당하여 출력
+4-1. 함수 "StartNextObject" 실행시에 
+    "Property_List_Index = Property_List_Length = 0;"로 초기화
+5.GET_PROPERTY_RESPONSE
+  - RPM_new data = true, invoke logical = true
+    Err_detected = false, Has_rpm = true
+  - propertylist 다 처리할때 까지 (4, 5)과정 반복
+  - 마지막 propertylist에서 "Request_Invoke_ID == 0"이 됨
+  - mystate = NEXT_OBJECT로 이동
+
+
+
