@@ -305,3 +305,7 @@ router-mstp: $(BACNET_LIB_TARGET)
 writepropm: $(BACNET_LIB_TARGET)
 	$(MAKE) -b -C $@
 
+.PHONY: writeprop
+writeprop: $(BACNET_LIB_TARGET)
+	$(MAKE) -b -C $@
+

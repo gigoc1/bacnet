@@ -131,6 +131,10 @@ whois:
 writepropm:
 	$(MAKE) -s -C apps $@
 
+.PHONY: writeprop
+writeprop:
+	$(MAKE) -s -C apps $@
+
 .PHONY: router
 router:
 	$(MAKE) -s -C apps $@
