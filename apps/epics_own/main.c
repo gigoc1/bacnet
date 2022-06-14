@@ -821,76 +821,6 @@ static void BuildPropRequest(BACNET_READ_ACCESS_DATA *rpm_object)
  * @return The invokeID of the message sent, or 0 if reached the end
  *         of the property list.
  */
-static uint8_t Read_Properties(
-    uint32_t device_instance, BACNET_OBJECT_ID *pMyObject)
-{
-    uint8_t invoke_id = 0;
-    struct special_property_list_t PropertyListStruct;
-    unsigned int i = 0, j = 0;
-
-    if ((!Has_RPM && (Property_List_Index == 0)) ||
-        (Property_List_Length == 0)) {
-        /* If we failed to get the Properties with RPM, just settle for what we
-         * know is the fixed list of Required and Optional properties.
-         * In practice, this should only happen for simple devices that don't
-         * implement RPM or have really limited MAX_APDU size.
-         */
-        property_list_special(pMyObject->type, &PropertyListStruct);
-        if (Optional_Properties) {
-            Property_List_Length = PropertyListStruct.Required.count +
-                PropertyListStruct.Optional.count;
-        } else {
-            Property_List_Length = PropertyListStruct.Required.count;
-        }
-        if (Property_List_Length > MAX_PROPS) {
-            Property_List_Length = MAX_PROPS;
-        }
-        /* Copy this list for later one-by-one processing */
-        for (i = 0; i < Property_List_Length; i++) {
-            if (i < PropertyListStruct.Required.count) {
-                Property_List[i] = PropertyListStruct.Required.pList[i];
-            } else if (Optional_Properties) {
-                Property_List[i] = PropertyListStruct.Optional.pList[j];
-                j++;
-            }
-        }
-        /* Just to be sure we terminate */
-        Property_List[i] = -1;
-    }
-    if (Property_List[Property_List_Index] != -1) {
-        int prop = Property_List[Property_List_Index];
-        uint32_t array_index;
-        IsLongArray = false;
-        if (Using_Walked_List) {
-            if (Walked_List_Length == 0) {
-                array_index = 0;
-            } else {
-                array_index = Walked_List_Index;
-            }
-        } else {
-            fprintf(stdout, "    ");
-            Print_Property_Identifier(prop);
-            fprintf(stdout, ": ");
-            array_index = BACNET_ARRAY_ALL;
-
-            switch (prop) {
-                    /* These are all potentially long arrays, so they may abort
-                     */
-                case PROP_OBJECT_LIST:
-                case PROP_STATE_TEXT:
-                case PROP_STRUCTURED_OBJECT_LIST:
-                case PROP_SUBORDINATE_ANNOTATIONS:
-                case PROP_SUBORDINATE_LIST:
-                    IsLongArray = true;
-                    break;
-            }
-        }
-        invoke_id = Send_Read_Property_Request(device_instance, pMyObject->type,
-            pMyObject->instance, prop, array_index);
-    }
-
-    return invoke_id;
-}
 
 static uint8_t Read_Properties_01(
     uint32_t device_instance, BACNET_OBJECT_ID *pMyObject)
@@ -1455,7 +1385,7 @@ int main(int argc, char *argv[])
 {
     BACNET_ADDRESS src; /* address where message came from */
     uint16_t pdu_len = 0;
-    unsigned timeout = 100; /* milliseconds */
+    unsigned timeout = 1000; /* milliseconds */
     unsigned max_apdu = 0;
     time_t elapsed_seconds = 0;
     time_t last_seconds = 0;
@@ -1527,16 +1457,43 @@ int main(int argc, char *argv[])
 
     //1. INITIAL_BINDING
     do {
+        /* increment timer - will exit if timed out */
+        last_seconds = current_seconds;
+        current_seconds = time(NULL);
+        /* Has at least one second passed ? */
+        if (current_seconds != last_seconds) {
+            tsm_timer_milliseconds(
+                (uint16_t)((current_seconds - last_seconds) * 1000));
+        }
+
         pdu_len = datalink_receive(&src, &Rx_Buf[0], MAX_MPDU, timeout);
         if (pdu_len) {
             npdu_handler(&src, &Rx_Buf[0], pdu_len);
         }
         found = address_bind_request(
             Target_Device_Object_Instance, &max_apdu, &Target_Address);
+        if (!found) {
+            /* increment timer - exit if timed out */
+            elapsed_seconds += (current_seconds - last_seconds);
+            if (elapsed_seconds > timeout_seconds) {
+                fprintf(stderr,
+                    "\rError: Unable to bind to %u"
+                    " after waiting %ld seconds.\n",
+                    Target_Device_Object_Instance, (long int)elapsed_seconds);
+                break;
+            }
+            /* else, loop back and try again */
+            continue;
+        } else {
+            rpm_object = calloc(1, sizeof(BACNET_READ_ACCESS_DATA));
+            assert(rpm_object);
+            myState = GET_HEADING_INFO;
+        }
+        break;
     } while (!found);
 
-    rpm_object = calloc(1, sizeof(BACNET_READ_ACCESS_DATA));
-    assert(rpm_object);
+    // rpm_object = calloc(1, sizeof(BACNET_READ_ACCESS_DATA));
+    // assert(rpm_object);
 
     // 2. Print_Heading: Product/model name print..
     myState = GET_HEADING_INFO;

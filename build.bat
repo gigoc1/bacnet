@@ -11,8 +11,8 @@ set MAKE=mingw32-make.exe
 
 rem doskey make = mingw32-make.exe $*
 
-mingw32-make BACNET_PORT=win32 clean
-mingw32-make BACNET_PORT=win32 BUILD=debug epics
+@REM mingw32-make BACNET_PORT=win32 clean
+mingw32-make BACNET_PORT=win32 BUILD=debug epics_own
 
 rem Build for MinGW debug
 rem make BACNET_PORT=win32 BUILD=debug clean all

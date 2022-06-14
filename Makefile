@@ -103,6 +103,10 @@ readbdt:
 readfdt:
 	$(MAKE) -s -C apps $@
 
+.PHONY: readprop
+readprop:
+	$(MAKE) -s -C apps $@
+
 .PHONY: writebdt
 writebdt:
 	$(MAKE) -s -C apps $@
