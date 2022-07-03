@@ -1561,7 +1561,7 @@ int bacapp_snprintf_value(
                     }
                 }
                 ret_val += slen;
-                slen = snprintf(str, str_len, "%lu",
+                slen = snprintf(str, str_len, "%lu)",
                     (unsigned long)value->type.Object_Id.instance);
                 ret_val += slen;
                 break;
@@ -1672,12 +1672,12 @@ bool bacapp_print_value(
     str_len = bacapp_snprintf_value(NULL, 0, object_value);
     if (str_len > 0) {
 #if defined (__STDC_VERSION__) && __STDC_VERSION__ >= 199901L
-        char str[str_len+1];
+        char str[str_len+10];
 #else
         char *str;
-        str = calloc(sizeof(char), str_len+1);
+        str = calloc(sizeof(char), str_len+10);
 #endif
-        bacapp_snprintf_value(str, str_len+1, object_value);
+        bacapp_snprintf_value(str, str_len+10, object_value);
         if (stream) {
             fprintf(stream, "%s", str);
         }

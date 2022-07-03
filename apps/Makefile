@@ -95,7 +95,7 @@ BACNET_SRC_DIR =  $(realpath ../src)
 
 #build for release (default) or debug
 OPTIMIZATION ?= -Os
-DEBUGGING ?=
+DEBUGGING ?= -g
 WARNINGS ?= -Wall -Wmissing-prototypes
 # dead code removal
 ifeq (${BUILD},debug)
