@@ -95,6 +95,10 @@ gateway:
 gateway-win32:
 	$(MAKE) BACNET_PORT=win32 -s -C apps gateway
 
+.PHONY: reinit
+reinit:
+	$(MAKE) -s -C apps $@
+
 .PHONY: readbdt
 readbdt:
 	$(MAKE) -s -C apps $@
@@ -105,6 +109,10 @@ readfdt:
 
 .PHONY: readprop
 readprop:
+	$(MAKE) -s -C apps $@
+
+.PHONY: readpropm
+readpropm:
 	$(MAKE) -s -C apps $@
 
 .PHONY: writebdt
@@ -129,6 +137,10 @@ uevent:
 
 .PHONY: whois
 whois:
+	$(MAKE) -s -C apps $@
+
+.PHONY: whoisrouter
+whoisrouter:
 	$(MAKE) -s -C apps $@
 
 .PHONY: writepropm
