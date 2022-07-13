@@ -281,6 +281,10 @@ uevent: $(BACNET_LIB_TARGET)
 whois: $(BACNET_LIB_TARGET)
 	$(MAKE) -b -C $@
 
+.PHONY: whoisrouter
+whoisrouter: $(BACNET_LIB_TARGET)
+	$(MAKE) -b -C $@
+
 .PHONY: writebdt
 writebdt: $(BACNET_LIB_TARGET)
 	$(MAKE) -b -C $@
