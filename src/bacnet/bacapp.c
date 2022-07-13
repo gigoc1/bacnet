@@ -1169,7 +1169,8 @@ int bacapp_snprintf_value(
     BACNET_APPLICATION_DATA_VALUE *value;
     BACNET_PROPERTY_ID property = PROP_ALL;
     BACNET_OBJECT_TYPE object_type = MAX_BACNET_OBJECT_TYPE;
-    int ret_val = BACNET_STATUS_ERROR;
+    // int ret_val = BACNET_STATUS_ERROR;
+    int ret_val = 0;
     int slen = 0;
 #if defined(BACAPP_OCTET_STRING) || defined (BACAPP_TYPES_EXTRA)
     uint8_t *octet_str;

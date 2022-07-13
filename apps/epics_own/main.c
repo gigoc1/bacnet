@@ -1221,7 +1221,7 @@ static void PrintHeading(void)
     }
     printf("}\n\n");
 
-    printf("Standard Object-Types Supported:\n");
+    printf("Standard Object Types Supported:\n");
     printf("{\n");
     value = object_property_value(PROP_PROTOCOL_OBJECT_TYPES_SUPPORTED);
     /* We have to process this bit string and determine which Object Types we
@@ -1232,7 +1232,7 @@ static void PrintHeading(void)
         printf("-- objects reported by this device\n");
         for (i = 0; i < len; i++) {
             if (bitstring_bit(&value->type.Bit_String, (uint8_t)i))
-                printf(" %s\n", bactext_object_type_name(i));
+                printf(" %s\n", bactext_object_type_name_epics(i));
         }
     } else {
         printf("-- possible objects in this device\n");

@@ -244,9 +244,77 @@ INDTEXT_DATA bacnet_object_type_names[] = { { OBJECT_ANALOG_INPUT,
        the procedures and constraints described in Clause 23. */
     { 0, NULL } };
 
+INDTEXT_DATA bacnet_object_type_names_epics[] = { { OBJECT_ANALOG_INPUT,
+                                                "Analog Input" },
+    { OBJECT_ANALOG_OUTPUT, "Analog Output" },
+    { OBJECT_ANALOG_VALUE, "Analog Value" },
+    { OBJECT_BINARY_INPUT, "Binary Input" },
+    { OBJECT_BINARY_OUTPUT, "Binary Output" },
+    { OBJECT_BINARY_VALUE, "Binary Value" }, { OBJECT_CALENDAR, "Calendar" },
+    { OBJECT_COMMAND, "Command" }, { OBJECT_DEVICE, "Device" },
+    { OBJECT_EVENT_ENROLLMENT, "EventEnrollment" }, { OBJECT_FILE, "File" },
+    { OBJECT_GROUP, "Group" }, { OBJECT_LOOP, "Loop" },
+    { OBJECT_MULTI_STATE_INPUT, "Multi-state Input" },
+    { OBJECT_MULTI_STATE_OUTPUT, "Multi-state Output" },
+    { OBJECT_NOTIFICATION_CLASS, "NotificationClass" },
+    { OBJECT_PROGRAM, "Program" }, { OBJECT_SCHEDULE, "Schedule" },
+    { OBJECT_AVERAGING, "Averaging" },
+    { OBJECT_MULTI_STATE_VALUE, "Multi-state Value" },
+    { OBJECT_TRENDLOG, "Trend Log" },
+    { OBJECT_LIFE_SAFETY_POINT, "LifeSafetyPoint" },
+    { OBJECT_LIFE_SAFETY_ZONE, "LifeSafetyZone" },
+    { OBJECT_ACCUMULATOR, "Accumulator" },
+    { OBJECT_PULSE_CONVERTER, "Pulse Converter" },
+    { OBJECT_EVENT_LOG, "Event Log" }, { OBJECT_GLOBAL_GROUP, "Global Group" },
+    { OBJECT_TREND_LOG_MULTIPLE, "Trend Log Multiple" },
+    { OBJECT_LOAD_CONTROL, "Load Control" },
+    { OBJECT_STRUCTURED_VIEW, "Structured View" },
+    { OBJECT_ACCESS_DOOR, "Access Door" },
+    { OBJECT_LIGHTING_OUTPUT, "Lighting Output" },
+    { OBJECT_ACCESS_CREDENTIAL, "Access Credential" },
+    { OBJECT_ACCESS_POINT, "Access Point" },
+    { OBJECT_ACCESS_RIGHTS, "Access Rights" },
+    { OBJECT_ACCESS_USER, "Access User" },
+    { OBJECT_ACCESS_ZONE, "Access Zone" },
+    { OBJECT_CREDENTIAL_DATA_INPUT, "Credential Data Input" },
+    { OBJECT_NETWORK_SECURITY, "Network Security" },
+    { OBJECT_BITSTRING_VALUE, "Bitstring Value" },
+    { OBJECT_CHARACTERSTRING_VALUE, "Characterstring Value" },
+    { OBJECT_DATE_PATTERN_VALUE, "Date Pattern Value" },
+    { OBJECT_DATE_VALUE, "Date Value" },
+    { OBJECT_DATETIME_PATTERN_VALUE, "Datetime Pattern Value" },
+    { OBJECT_DATETIME_VALUE, "Datetime Value" },
+    { OBJECT_INTEGER_VALUE, "Integer Value" },
+    { OBJECT_LARGE_ANALOG_VALUE, "Large Analog Value" },
+    { OBJECT_OCTETSTRING_VALUE, "Octetstring Value" },
+    { OBJECT_POSITIVE_INTEGER_VALUE, "Positive Integer Value" },
+    { OBJECT_TIME_PATTERN_VALUE, "Time Pattern Value" },
+    { OBJECT_TIME_VALUE, "Time Value" },
+    { OBJECT_NOTIFICATION_FORWARDER, "Notification Forwarder" },
+    { OBJECT_ALERT_ENROLLMENT, "Alert Enrollment" },
+    { OBJECT_CHANNEL, "Channel" },
+    { OBJECT_LIGHTING_OUTPUT, "Lighting Output" },
+    { OBJECT_BINARY_LIGHTING_OUTPUT, "Binary Lighting Output" },
+    { OBJECT_NETWORK_PORT, "Network Port" },
+    { OBJECT_ELEVATOR_GROUP, "Elevator Group" },
+    { OBJECT_ESCALATOR, "Escalator" }, { OBJECT_LIFT, "Lift" },
+    { OBJECT_STAGING, "Staging" }, { OBJECT_AUDIT_LOG, "Audit Log" },
+    { OBJECT_AUDIT_REPORTER, "Audit Reporter" }, { OBJECT_COLOR, "Color" },
+    { OBJECT_COLOR_TEMPERATURE, "Color Temperature" },
+    /* Enumerated values 0-127 are reserved for definition by ASHRAE.
+       Enumerated values 128-1023 may be used by others subject to
+       the procedures and constraints described in Clause 23. */
+    { 0, NULL } };
+
 const char *bactext_object_type_name(unsigned index)
 {
     return indtext_by_index_split_default(bacnet_object_type_names, index, 128,
+        ASHRAE_Reserved_String, Vendor_Proprietary_String);
+}
+
+const char *bactext_object_type_name_epics(unsigned index)
+{
+    return indtext_by_index_split_default(bacnet_object_type_names_epics, index, 128,
         ASHRAE_Reserved_String, Vendor_Proprietary_String);
 }
 
