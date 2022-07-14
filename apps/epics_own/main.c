@@ -1340,6 +1340,8 @@ static void PrintHeading(void)
     printf("  External Command Fail Time: 1\n");
     printf("  Program Object State Change Fail Time: 2\n");
     printf("  Acknowledgement Fail Time: 2\n");
+    printf("  Slave Proxy Confirm Interval: 2\n");
+    printf("  Unconfirmed Response Fail Time: 2\n");
     printf("}\n\n");
 }
 
@@ -1661,7 +1663,7 @@ int main(int argc, char *argv[])
                             } else {
                                 /* OK, skip this one and try the next property.
                                  */
-                                fprintf(stdout, "    -- Failed to get ");
+                                fprintf(stdout, "?    -- Failed to get ");
                                 Print_Property_Identifier(
                                     Property_List[Property_List_Index]);
                                 fprintf(stdout, " \n");
