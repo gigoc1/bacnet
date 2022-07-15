@@ -1342,6 +1342,9 @@ static void PrintHeading(void)
     printf("  Acknowledgement Fail Time: 2\n");
     printf("  Slave Proxy Confirm Interval: 2\n");
     printf("  Unconfirmed Response Fail Time: 2\n");
+    printf("  Activate Changes Fail Time: 60\n");
+    printf("  Auto Negotiation Fail Time: 15\n");
+    printf("  Foreign Device Registration Fail Time: 10\n");
     printf("}\n\n");
 }
 
