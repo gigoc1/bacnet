@@ -454,7 +454,7 @@ typedef enum {
     PROP_NETWORK_TYPE = 427,
     PROP_ROUTING_TABLE = 428,
     PROP_VIRTUAL_MAC_ADDRESS_TABLE = 429,
-    /* enumerations 430-491 */
+    /* enumerations 430-491 are defined in Addendum-135-2012as */
     PROP_COMMAND_TIME_ARRAY = 430,
     PROP_CURRENT_COMMAND_PRIORITY = 431,
     PROP_LAST_COMMAND_TIME = 432,
@@ -545,8 +545,10 @@ typedef enum {
     /* Enumerated values 0-511 are reserved for definition by ASHRAE.  */
     /* Enumerated values 512-4194303 may be used by others subject to the  */
     /* procedures and constraints described in Clause 23.  */
+    PROP_RESERVED_RANGE_MAX = 511,
     PROP_PROPRIETARY_RANGE_MIN = 512,
     PROP_PROPRIETARY_RANGE_MAX = 4194303,
+    PROP_RESERVED_RANGE_MIN2 = 4194304,
     /* enumerations 4194304-4194327 are defined in Addendum 2020cc */
     PROP_MAX_BVLC_LENGTH_ACCEPTED = 4194304,
     PROP_MAX_NPDU_LENGTH_ACCEPTED = 4194305,
@@ -1295,6 +1297,8 @@ typedef enum BACnetObjectType {
     OBJECT_AUDIT_REPORTER = 62, /* Addendum 135-2016bi */
     OBJECT_COLOR = 63, /* Addendum 135-2020ca */
     OBJECT_COLOR_TEMPERATURE = 64, /* Addendum 135-2020ca */
+    BACNET_OBJECT_TYPE_LAST = OBJECT_COLOR_TEMPERATURE,
+    BACNET_OBJECT_TYPE_RESERVED_MAX = 127,
     /* Enumerated values 0-127 are reserved for definition by ASHRAE. */
     /* Enumerated values 128-1023 may be used by others subject to  */
     /* the procedures and constraints described in Clause 23. */
@@ -1474,7 +1478,7 @@ typedef enum BACnet_Confirmed_Service_Choice {
     /* Services added after 2016 */
     /* confirmed-audit-notification [32] see Alarm and Event Services */
     /* audit-log-query [33] see Object Access Services */
-    MAX_BACNET_CONFIRMED_SERVICE = 30
+    MAX_BACNET_CONFIRMED_SERVICE = 34
 } BACNET_CONFIRMED_SERVICE;
 
 /* BACnetUnconfirmedServiceChoice ::= ENUMERATED */
@@ -1493,6 +1497,8 @@ typedef enum BACnet_Unconfirmed_Service_Choice {
     SERVICE_UNCONFIRMED_WRITE_GROUP = 10,
     /* addendum 2012-aq */
     SERVICE_UNCONFIRMED_COV_NOTIFICATION_MULTIPLE = 11,
+    /* addendum 2016-bi */
+    SERVICE_UNCONFIRMED_AUDIT_NOTIFICATION = 12,
     /* addendum 2016-bz */
     SERVICE_UNCONFIRMED_WHO_AM_I = 13,
     SERVICE_UNCONFIRMED_YOU_ARE = 14,
@@ -1509,6 +1515,7 @@ typedef enum BACnet_Services_Supported {
     /* Alarm and Event Services */
     SERVICE_SUPPORTED_ACKNOWLEDGE_ALARM = 0,
     SERVICE_SUPPORTED_CONFIRMED_COV_NOTIFICATION = 1,
+    SERVICE_SUPPORTED_CONFIRMED_COV_NOTIFICATION_MULTIPLE = 42,
     SERVICE_SUPPORTED_CONFIRMED_EVENT_NOTIFICATION = 2,
     SERVICE_SUPPORTED_GET_ALARM_SUMMARY = 3,
     SERVICE_SUPPORTED_GET_ENROLLMENT_SUMMARY = 4,
@@ -1548,9 +1555,9 @@ typedef enum BACnet_Services_Supported {
     /* Security Services */
     SERVICE_SUPPORTED_AUTHENTICATE = 24,
     SERVICE_SUPPORTED_REQUEST_KEY = 25,
+    /* Unconfirmed Services */
     SERVICE_SUPPORTED_I_AM = 26,
     SERVICE_SUPPORTED_I_HAVE = 27,
-    /* Unconfirmed Services */
     SERVICE_SUPPORTED_UNCONFIRMED_COV_NOTIFICATION = 28,
     SERVICE_SUPPORTED_UNCONFIRMED_COV_NOTIFICATION_MULTIPLE = 43,
     SERVICE_SUPPORTED_UNCONFIRMED_EVENT_NOTIFICATION = 29,
@@ -2059,7 +2066,7 @@ typedef enum BACnetColorTransition {
     BACNET_COLOR_TRANSITION_NONE = 0,
     BACNET_COLOR_TRANSITION_FADE = 1,
     BACNET_COLOR_TRANSITION_RAMP = 2,
-    BACNET_COLOR_TRANSITION_MAX = 3,
+    BACNET_COLOR_TRANSITION_MAX = 3
 } BACNET_COLOR_TRANSITION;
 
 /* NOTE: BACNET_DAYS_OF_WEEK is different than BACNET_WEEKDAY */

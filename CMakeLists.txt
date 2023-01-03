@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.1 FATAL_ERROR)
 
 project(
   bacnet-stack
@@ -124,6 +124,10 @@ add_library(${PROJECT_NAME}
     src/bacnet/bactext.h
     src/bacnet/bactimevalue.c
     src/bacnet/bactimevalue.h
+    src/bacnet/dailyschedule.c
+    src/bacnet/dailyschedule.h
+    src/bacnet/weeklyschedule.c
+    src/bacnet/weeklyschedule.h
     $<$<BOOL:${BACDL_BIP}>:src/bacnet/basic/bbmd/h_bbmd.c>
     $<$<BOOL:${BACDL_BIP}>:src/bacnet/basic/bbmd/h_bbmd.h>
     $<$<BOOL:${BACDL_BIP6}>:src/bacnet/basic/bbmd6/h_bbmd6.c>
@@ -475,6 +479,7 @@ if(ZEPHYR_BASE)
 elseif(${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
   message(STATUS "BACNET: building for linux")
   set(BACNET_PORT_DIRECTORY_PATH ${CMAKE_CURRENT_LIST_DIR}/ports/linux)
+  target_link_libraries(${PROJECT_NAME} PUBLIC m)
 
   target_sources(${PROJECT_NAME} PRIVATE
     ports/linux/bacport.h
@@ -501,6 +506,8 @@ elseif(WIN32)
     winmm
     $<$<BOOL:${BACDL_BIP}>:ws2_32>
     $<$<BOOL:${BACDL_BIP}>:iphlpapi>)
+
+  add_definitions("/W3 /D_CRT_SECURE_NO_WARNINGS /wd4244 /wd4018 /wd4267")
 
   target_sources(${PROJECT_NAME} PRIVATE
     ports/win32/bacport.h
@@ -695,6 +702,7 @@ set(BACNET_STACK_CONFIG_INSTALL_DIR ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME
 install(
   TARGETS ${PROJECT_NAME}
   EXPORT ${PROJECT_NAME}Targets
+  RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
   LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT lib
   ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT lib)
 

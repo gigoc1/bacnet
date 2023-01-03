@@ -45,6 +45,7 @@ list(APPEND testdirs
   bacnet/bacpropstates
   bacnet/bacreal
   bacnet/bacstr
+  bacnet/bactimevalue
   bacnet/cov
   bacnet/datetime
   bacnet/dcc
@@ -69,6 +70,7 @@ list(APPEND testdirs
   bacnet/whohas
   bacnet/whois
   bacnet/wp
+  bacnet/weeklyschedule
   )
 
 # bacnet/basic/*
@@ -90,6 +92,7 @@ list(APPEND testdirs
   bacnet/basic/object/bo
   bacnet/basic/object/bv
   bacnet/basic/object/color_object
+  bacnet/basic/object/color_temperature
   bacnet/basic/object/command
   bacnet/basic/object/credential_data_input
   bacnet/basic/object/device

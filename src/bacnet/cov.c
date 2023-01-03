@@ -65,6 +65,7 @@ static int notify_encode_apdu(
     BACNET_PROPERTY_VALUE *value = NULL; /* value in list */
     BACNET_APPLICATION_DATA_VALUE *app_data = NULL;
 
+    (void)max_apdu_len;
     if (apdu) {
         /* tag 0 - subscriberProcessIdentifier */
         len = encode_context_unsigned(
@@ -405,6 +406,7 @@ int cov_subscribe_encode_apdu(uint8_t *apdu,
     int len = 0; /* length of each encoding */
     int apdu_len = 0; /* total length of the apdu, return value */
 
+    (void)max_apdu_len;
     if (apdu && data) {
         apdu[0] = PDU_TYPE_CONFIRMED_SERVICE_REQUEST;
         apdu[1] = encode_max_segs_max_apdu(0, MAX_APDU);
@@ -554,6 +556,7 @@ int cov_subscribe_property_encode_apdu(uint8_t *apdu,
     int len = 0; /* length of each encoding */
     int apdu_len = 0; /* total length of the apdu, return value */
 
+    (void)max_apdu_len;
     if (apdu && data) {
         apdu[0] = PDU_TYPE_CONFIRMED_SERVICE_REQUEST;
         apdu[1] = encode_max_segs_max_apdu(0, MAX_APDU);
@@ -773,9 +776,8 @@ void cov_data_value_list_link(
  * @param out_of_service - value of out-of-service status-flags
  *
  * @return true if values were encoded
-*/
-bool cov_value_list_encode_real(
-    BACNET_PROPERTY_VALUE * value_list,
+ */
+bool cov_value_list_encode_real(BACNET_PROPERTY_VALUE *value_list,
     float value,
     bool in_alarm,
     bool fault,
@@ -800,10 +802,10 @@ bool cov_value_list_encode_real(
         value_list->value.context_specific = false;
         value_list->value.tag = BACNET_APPLICATION_TAG_BIT_STRING;
         bitstring_init(&value_list->value.type.Bit_String);
-        bitstring_set_bit(&value_list->value.type.Bit_String,
-            STATUS_FLAG_IN_ALARM, in_alarm);
-        bitstring_set_bit(&value_list->value.type.Bit_String,
-            STATUS_FLAG_FAULT, fault);
+        bitstring_set_bit(
+            &value_list->value.type.Bit_String, STATUS_FLAG_IN_ALARM, in_alarm);
+        bitstring_set_bit(
+            &value_list->value.type.Bit_String, STATUS_FLAG_FAULT, fault);
         bitstring_set_bit(&value_list->value.type.Bit_String,
             STATUS_FLAG_OVERRIDDEN, overridden);
         bitstring_set_bit(&value_list->value.type.Bit_String,
@@ -827,9 +829,8 @@ bool cov_value_list_encode_real(
  * @param out_of_service - value of out-of-service status-flags
  *
  * @return true if values were encoded
-*/
-bool cov_value_list_encode_enumerated(
-    BACNET_PROPERTY_VALUE * value_list,
+ */
+bool cov_value_list_encode_enumerated(BACNET_PROPERTY_VALUE *value_list,
     uint32_t value,
     bool in_alarm,
     bool fault,
@@ -854,10 +855,10 @@ bool cov_value_list_encode_enumerated(
         value_list->value.context_specific = false;
         value_list->value.tag = BACNET_APPLICATION_TAG_BIT_STRING;
         bitstring_init(&value_list->value.type.Bit_String);
-        bitstring_set_bit(&value_list->value.type.Bit_String,
-            STATUS_FLAG_IN_ALARM, in_alarm);
-        bitstring_set_bit(&value_list->value.type.Bit_String,
-            STATUS_FLAG_FAULT, fault);
+        bitstring_set_bit(
+            &value_list->value.type.Bit_String, STATUS_FLAG_IN_ALARM, in_alarm);
+        bitstring_set_bit(
+            &value_list->value.type.Bit_String, STATUS_FLAG_FAULT, fault);
         bitstring_set_bit(&value_list->value.type.Bit_String,
             STATUS_FLAG_OVERRIDDEN, overridden);
         bitstring_set_bit(&value_list->value.type.Bit_String,
@@ -881,9 +882,8 @@ bool cov_value_list_encode_enumerated(
  * @param out_of_service - value of out-of-service status-flags
  *
  * @return true if values were encoded
-*/
-bool cov_value_list_encode_unsigned(
-    BACNET_PROPERTY_VALUE * value_list,
+ */
+bool cov_value_list_encode_unsigned(BACNET_PROPERTY_VALUE *value_list,
     uint32_t value,
     bool in_alarm,
     bool fault,
@@ -908,10 +908,10 @@ bool cov_value_list_encode_unsigned(
         value_list->value.context_specific = false;
         value_list->value.tag = BACNET_APPLICATION_TAG_BIT_STRING;
         bitstring_init(&value_list->value.type.Bit_String);
-        bitstring_set_bit(&value_list->value.type.Bit_String,
-            STATUS_FLAG_IN_ALARM, in_alarm);
-        bitstring_set_bit(&value_list->value.type.Bit_String,
-            STATUS_FLAG_FAULT, fault);
+        bitstring_set_bit(
+            &value_list->value.type.Bit_String, STATUS_FLAG_IN_ALARM, in_alarm);
+        bitstring_set_bit(
+            &value_list->value.type.Bit_String, STATUS_FLAG_FAULT, fault);
         bitstring_set_bit(&value_list->value.type.Bit_String,
             STATUS_FLAG_OVERRIDDEN, overridden);
         bitstring_set_bit(&value_list->value.type.Bit_String,
@@ -925,7 +925,7 @@ bool cov_value_list_encode_unsigned(
     return status;
 }
 
-#if defined (BACAPP_CHARACTER_STRING)
+#if defined(BACAPP_CHARACTER_STRING)
 /**
  * @brief Encode the Value List for CHARACTER_STRING Present-Value and
  * Status-Flags
@@ -937,10 +937,9 @@ bool cov_value_list_encode_unsigned(
  * @param out_of_service - value of out-of-service status-flags
  *
  * @return true if values were encoded
-*/
-bool cov_value_list_encode_character_string(
-    BACNET_PROPERTY_VALUE * value_list,
-    BACNET_CHARACTER_STRING * value,
+ */
+bool cov_value_list_encode_character_string(BACNET_PROPERTY_VALUE *value_list,
+    BACNET_CHARACTER_STRING *value,
     bool in_alarm,
     bool fault,
     bool overridden,
@@ -953,9 +952,7 @@ bool cov_value_list_encode_character_string(
         value_list->propertyArrayIndex = BACNET_ARRAY_ALL;
         value_list->value.context_specific = false;
         value_list->value.tag = BACNET_APPLICATION_TAG_CHARACTER_STRING;
-        characterstring_copy(
-            &value_list->value.type.Character_String,
-            value);
+        characterstring_copy(&value_list->value.type.Character_String, value);
         value_list->value.next = NULL;
         value_list->priority = BACNET_NO_PRIORITY;
         value_list = value_list->next;
@@ -966,10 +963,10 @@ bool cov_value_list_encode_character_string(
         value_list->value.context_specific = false;
         value_list->value.tag = BACNET_APPLICATION_TAG_BIT_STRING;
         bitstring_init(&value_list->value.type.Bit_String);
-        bitstring_set_bit(&value_list->value.type.Bit_String,
-            STATUS_FLAG_IN_ALARM, in_alarm);
-        bitstring_set_bit(&value_list->value.type.Bit_String,
-            STATUS_FLAG_FAULT, fault);
+        bitstring_set_bit(
+            &value_list->value.type.Bit_String, STATUS_FLAG_IN_ALARM, in_alarm);
+        bitstring_set_bit(
+            &value_list->value.type.Bit_String, STATUS_FLAG_FAULT, fault);
         bitstring_set_bit(&value_list->value.type.Bit_String,
             STATUS_FLAG_OVERRIDDEN, overridden);
         bitstring_set_bit(&value_list->value.type.Bit_String,

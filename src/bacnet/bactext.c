@@ -69,37 +69,37 @@ static bool bactext_strtol_index(
 }
 
 INDTEXT_DATA bacnet_confirmed_service_names[] = {
-    { SERVICE_CONFIRMED_ACKNOWLEDGE_ALARM, "AcknowledgeAlarm" },
-    { SERVICE_CONFIRMED_COV_NOTIFICATION, "ConfirmedCOVNotification" },
-    { SERVICE_CONFIRMED_EVENT_NOTIFICATION, "ConfirmedEventNotification" },
-    { SERVICE_CONFIRMED_GET_ALARM_SUMMARY, "GetAlarmSummary" },
-    { SERVICE_CONFIRMED_GET_ENROLLMENT_SUMMARY, "GetEnrollmentSummary" },
-    { SERVICE_CONFIRMED_SUBSCRIBE_COV, "SubscribeCOV" },
-    { SERVICE_CONFIRMED_ATOMIC_READ_FILE, "AtomicReadFile" },
-    { SERVICE_CONFIRMED_ATOMIC_WRITE_FILE, "AtomicWriteFile" },
-    { SERVICE_CONFIRMED_ADD_LIST_ELEMENT, "AddListElement" },
-    { SERVICE_CONFIRMED_REMOVE_LIST_ELEMENT, "RemoveListElement" },
-    { SERVICE_CONFIRMED_CREATE_OBJECT, "CreateObject" },
-    { SERVICE_CONFIRMED_DELETE_OBJECT, "DeleteObject" },
-    { SERVICE_CONFIRMED_READ_PROPERTY, "ReadProperty" },
-    { SERVICE_CONFIRMED_READ_PROP_CONDITIONAL, "ReadPropertyConditional" },
-    { SERVICE_CONFIRMED_READ_PROP_MULTIPLE, "ReadPropertyMultiple" },
-    { SERVICE_CONFIRMED_WRITE_PROPERTY, "WriteProperty" },
-    { SERVICE_CONFIRMED_WRITE_PROP_MULTIPLE, "WritePropertyMultiple" },
+    { SERVICE_CONFIRMED_ACKNOWLEDGE_ALARM, "Acknowledge-Alarm" },
+    { SERVICE_CONFIRMED_COV_NOTIFICATION, "COV-Notification" },
+    { SERVICE_CONFIRMED_EVENT_NOTIFICATION, "Event-Notification" },
+    { SERVICE_CONFIRMED_GET_ALARM_SUMMARY, "Get-Alarm-Summary" },
+    { SERVICE_CONFIRMED_GET_ENROLLMENT_SUMMARY, "Get-Enrollment-Summary" },
+    { SERVICE_CONFIRMED_SUBSCRIBE_COV, "Subscribe-COV" },
+    { SERVICE_CONFIRMED_ATOMIC_READ_FILE, "Atomic-Read-File" },
+    { SERVICE_CONFIRMED_ATOMIC_WRITE_FILE, "Atomic-Write-File" },
+    { SERVICE_CONFIRMED_ADD_LIST_ELEMENT, "Add-List-Element" },
+    { SERVICE_CONFIRMED_REMOVE_LIST_ELEMENT, "Remove-List-Element" },
+    { SERVICE_CONFIRMED_CREATE_OBJECT, "Create-Object" },
+    { SERVICE_CONFIRMED_DELETE_OBJECT, "Delete-Object" },
+    { SERVICE_CONFIRMED_READ_PROPERTY, "Read-Property" },
+    { SERVICE_CONFIRMED_READ_PROP_CONDITIONAL, "Read-Property-Conditional" },
+    { SERVICE_CONFIRMED_READ_PROP_MULTIPLE, "Read-Property-Multiple" },
+    { SERVICE_CONFIRMED_WRITE_PROPERTY, "Write-Property" },
+    { SERVICE_CONFIRMED_WRITE_PROP_MULTIPLE, "Write-Property-Multiple" },
     { SERVICE_CONFIRMED_DEVICE_COMMUNICATION_CONTROL,
-        "DeviceCommunicationControl" },
-    { SERVICE_CONFIRMED_PRIVATE_TRANSFER, "ConfirmedPrivateTransfer" },
-    { SERVICE_CONFIRMED_TEXT_MESSAGE, "ConfirmedTextMessage" },
-    { SERVICE_CONFIRMED_REINITIALIZE_DEVICE, "ReinitializeDevice" },
+        "Device-Communication-Control" },
+    { SERVICE_CONFIRMED_PRIVATE_TRANSFER, "Private-Transfer" },
+    { SERVICE_CONFIRMED_TEXT_MESSAGE, "Text-Message" },
+    { SERVICE_CONFIRMED_REINITIALIZE_DEVICE, "Reinitialize-Device" },
     { SERVICE_CONFIRMED_VT_OPEN, "VT-Open" },
     { SERVICE_CONFIRMED_VT_CLOSE, "VT-Close" },
     { SERVICE_CONFIRMED_VT_DATA, "VT-Data" },
     { SERVICE_CONFIRMED_AUTHENTICATE, "Authenticate" },
-    { SERVICE_CONFIRMED_REQUEST_KEY, "RequestKey" },
-    { SERVICE_CONFIRMED_READ_RANGE, "ReadRange" },
-    { SERVICE_CONFIRMED_LIFE_SAFETY_OPERATION, "LifeSafetyOperation" },
-    { SERVICE_CONFIRMED_SUBSCRIBE_COV_PROPERTY, "SubscribeCOVProperty" },
-    { SERVICE_CONFIRMED_GET_EVENT_INFORMATION, "GetEventInformation" },
+    { SERVICE_CONFIRMED_REQUEST_KEY, "Request-Key" },
+    { SERVICE_CONFIRMED_READ_RANGE, "Read-Range" },
+    { SERVICE_CONFIRMED_LIFE_SAFETY_OPERATION, "Life-Safety_Operation" },
+    { SERVICE_CONFIRMED_SUBSCRIBE_COV_PROPERTY, "Subscribe-COV-Property" },
+    { SERVICE_CONFIRMED_GET_EVENT_INFORMATION, "Get-Event-Information" },
     { 0, NULL }
 };
 
@@ -112,16 +112,16 @@ const char *bactext_confirmed_service_name(unsigned index)
 INDTEXT_DATA bacnet_unconfirmed_service_names[] = { { SERVICE_UNCONFIRMED_I_AM,
                                                         "I-Am" },
     { SERVICE_UNCONFIRMED_I_HAVE, "I-Have" },
-    { SERVICE_UNCONFIRMED_COV_NOTIFICATION, "UnconfirmedCOVNotification" },
-    { SERVICE_UNCONFIRMED_EVENT_NOTIFICATION, "UnconfirmedEventNotification" },
-    { SERVICE_UNCONFIRMED_PRIVATE_TRANSFER, "UnconfirmedPrivateTransfer" },
-    { SERVICE_UNCONFIRMED_TEXT_MESSAGE, "UnconfirmedTextMessage" },
-    { SERVICE_UNCONFIRMED_TIME_SYNCHRONIZATION, "TimeSynchronization" },
+    { SERVICE_UNCONFIRMED_COV_NOTIFICATION, "COV-Notification" },
+    { SERVICE_UNCONFIRMED_EVENT_NOTIFICATION, "Event-Notification" },
+    { SERVICE_UNCONFIRMED_PRIVATE_TRANSFER, "Private-Transfer" },
+    { SERVICE_UNCONFIRMED_TEXT_MESSAGE, "Text-Message" },
+    { SERVICE_UNCONFIRMED_TIME_SYNCHRONIZATION, "Time-Synchronization" },
     { SERVICE_UNCONFIRMED_WHO_HAS, "Who-Has" },
     { SERVICE_UNCONFIRMED_WHO_IS, "Who-Is" },
     { SERVICE_UNCONFIRMED_UTC_TIME_SYNCHRONIZATION,
-        "UTCTimeSynchronization" },
-    { SERVICE_UNCONFIRMED_WRITE_GROUP, "WriteGroup" }, { 0, NULL } };
+        "UTC-Time-Synchronization" },
+    { SERVICE_UNCONFIRMED_WRITE_GROUP, "Write-Group" }, { 0, NULL } };
 
 const char *bactext_unconfirmed_service_name(unsigned index)
 {
@@ -129,8 +129,8 @@ const char *bactext_unconfirmed_service_name(unsigned index)
         bacnet_unconfirmed_service_names, index, ASHRAE_Reserved_String);
 }
 
-INDTEXT_DATA bacnet_application_tag_names[] = {
-    { BACNET_APPLICATION_TAG_NULL, "Null" },
+INDTEXT_DATA bacnet_application_tag_names[] = { { BACNET_APPLICATION_TAG_NULL,
+                                                    "Null" },
     { BACNET_APPLICATION_TAG_BOOLEAN, "Boolean" },
     { BACNET_APPLICATION_TAG_UNSIGNED_INT, "Unsigned Int" },
     { BACNET_APPLICATION_TAG_SIGNED_INT, "Signed Int" },
@@ -166,8 +166,7 @@ INDTEXT_DATA bacnet_application_tag_names[] = {
     { BACNET_APPLICATION_TAG_READ_ACCESS_SPECIFICATION,
         "BACnetReadAccessSpecification" },
     { BACNET_APPLICATION_TAG_LIGHTING_COMMAND, "BACnetLightingCommand" },
-    { BACNET_APPLICATION_TAG_HOST_N_PORT, "BACnetHostNPort" },
-    { 0, NULL } };
+    { BACNET_APPLICATION_TAG_HOST_N_PORT, "BACnetHostNPort" }, { 0, NULL } };
 
 const char *bactext_application_tag_name(unsigned index)
 {
@@ -300,7 +299,7 @@ INDTEXT_DATA bacnet_object_type_names_epics[] = { { OBJECT_ANALOG_INPUT,
     { OBJECT_ESCALATOR, "Escalator" }, { OBJECT_LIFT, "Lift" },
     { OBJECT_STAGING, "Staging" }, { OBJECT_AUDIT_LOG, "Audit Log" },
     { OBJECT_AUDIT_REPORTER, "Audit Reporter" }, { OBJECT_COLOR, "Color" },
-    { OBJECT_COLOR_TEMPERATURE, "Color Temperature" },
+    { OBJECT_COLOR_TEMPERATURE, "Color Temperature" },    
     /* Enumerated values 0-127 are reserved for definition by ASHRAE.
        Enumerated values 128-1023 may be used by others subject to
        the procedures and constraints described in Clause 23. */
@@ -308,8 +307,9 @@ INDTEXT_DATA bacnet_object_type_names_epics[] = { { OBJECT_ANALOG_INPUT,
 
 const char *bactext_object_type_name(unsigned index)
 {
-    return indtext_by_index_split_default(bacnet_object_type_names, index, 128,
-        ASHRAE_Reserved_String, Vendor_Proprietary_String);
+    return indtext_by_index_split_default(bacnet_object_type_names, index,
+        OBJECT_PROPRIETARY_MIN, ASHRAE_Reserved_String,
+        Vendor_Proprietary_String);
 }
 
 const char *bactext_object_type_name_epics(unsigned index)
@@ -812,16 +812,27 @@ INDTEXT_DATA bacnet_property_names[] = {
     { PROP_COLOR_COMMAND, "color-command" },
     { PROP_HIGH_END_TRIM, "high-end-trim" },
     { PROP_LOW_END_TRIM, "low-end-trim" },
-    { PROP_TRIM_FADE_TIME, "trim-fade-time" },
-    { 0, NULL }
+    { PROP_TRIM_FADE_TIME, "trim-fade-time" }, { 0, NULL }
 };
+
+bool bactext_property_name_proprietary(unsigned index)
+{
+    bool status = false;
+
+    if ((index >= PROP_PROPRIETARY_RANGE_MIN) &&
+        (index <= PROP_PROPRIETARY_RANGE_MAX)) {
+        status = true;
+    }
+
+    return status;
+}
 
 const char *bactext_property_name(unsigned index)
 {
     /* Enumerated values 0-511 are reserved for definition by ASHRAE.
        Enumerated values 512-4194303 may be used by others subject to the
        procedures and constraints described in Clause 23. */
-    if ((index >= 512) && (index <= 4194303)) {
+    if (bactext_property_name_proprietary(index)) {
         return Vendor_Proprietary_String;
     } else {
         return indtext_by_index_default(
@@ -1086,18 +1097,28 @@ INDTEXT_DATA bacnet_engineering_unit_names[] = {
        the procedures and constraints described in Clause 23. */
 };
 
+bool bactext_engineering_unit_name_proprietary(unsigned index)
+{
+    bool status = false;
+
+    if ((index >= UNITS_PROPRIETARY_RANGE_MIN) &&
+        (index <= UNITS_PROPRIETARY_RANGE_MAX)) {
+        status = true;
+    } else if ((index >= UNITS_PROPRIETARY_RANGE_MIN2) &&
+        (index <= UNITS_PROPRIETARY_RANGE_MAX2)) {
+        status = true;
+    }
+
+    return status;
+}
+
 const char *bactext_engineering_unit_name(unsigned index)
 {
-    if (index <= UNITS_RESERVED_RANGE_MAX) {
-        return indtext_by_index_default(
-            bacnet_engineering_unit_names, index, ASHRAE_Reserved_String);
-    } else if (index <= UNITS_PROPRIETARY_RANGE_MAX) {
+    if (bactext_engineering_unit_name_proprietary(index)) {
         return Vendor_Proprietary_String;
     } else if (index <= UNITS_RESERVED_RANGE_MAX2) {
         return indtext_by_index_default(
             bacnet_engineering_unit_names, index, ASHRAE_Reserved_String);
-    } else if (index <= UNITS_PROPRIETARY_RANGE_MAX2) {
-        return Vendor_Proprietary_String;
     }
 
     return ASHRAE_Reserved_String;

@@ -74,6 +74,7 @@ add_executable(${PROJECT_NAME}
 	${SRC_DIR}/bacnet/basic/service/h_cov.c
 	${SRC_DIR}/bacnet/basic/service/h_wp.c
 	${SRC_DIR}/bacnet/basic/sys/bigend.c
+	${SRC_DIR}/bacnet/basic/sys/debug.c
 	${SRC_DIR}/bacnet/basic/sys/keylist.c
 	${SRC_DIR}/bacnet/basic/tsm/tsm.c
 	${SRC_DIR}/bacnet/datalink/bvlc.c
@@ -90,6 +91,8 @@ add_executable(${PROJECT_NAME}
 	${SRC_DIR}/bacnet/reject.c
 	${SRC_DIR}/bacnet/timestamp.c
 	${SRC_DIR}/bacnet/wp.c
+	${SRC_DIR}/bacnet/weeklyschedule.c
+	${SRC_DIR}/bacnet/dailyschedule.c
 	./stubs.c
     # Test and test library files
 	./src/main.c

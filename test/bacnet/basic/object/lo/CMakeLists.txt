@@ -42,7 +42,6 @@ add_executable(${PROJECT_NAME}
 	${SRC_DIR}/bacnet/bacreal.c
 	${SRC_DIR}/bacnet/bacstr.c
 	${SRC_DIR}/bacnet/bactext.c
-	${SRC_DIR}/bacnet/basic/object/ao.c
 	${SRC_DIR}/bacnet/basic/sys/bigend.c
 	${SRC_DIR}/bacnet/datetime.c
 	${SRC_DIR}/bacnet/basic/sys/days.c
@@ -51,6 +50,9 @@ add_executable(${PROJECT_NAME}
 	${SRC_DIR}/bacnet/lighting.c
 	${SRC_DIR}/bacnet/timestamp.c
 	${SRC_DIR}/bacnet/wp.c
+	${SRC_DIR}/bacnet/weeklyschedule.c
+	${SRC_DIR}/bacnet/bactimevalue.c
+	${SRC_DIR}/bacnet/dailyschedule.c
     # Test and test library files
 	./src/main.c
 	${ZTST_DIR}/ztest_mock.c

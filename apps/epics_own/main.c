@@ -1459,18 +1459,18 @@ int main(int argc, char *argv[])
     myObject.type = OBJECT_DEVICE; // OBJECT_ANALOG_INPUT
     myObject.instance = Target_Device_Object_Instance;
     myState = INITIAL_BINDING;
-
-    //1. INITIAL_BINDING
+    
+    //1. INIT IAL_BINDING
     do {
         /* increment timer - will exit if timed out */
         last_seconds = current_seconds;
         current_seconds = time(NULL);
         /* Has at least one second passed ? */
         if (current_seconds != last_seconds) {
+            printf("1\n");
             tsm_timer_milliseconds(
                 (uint16_t)((current_seconds - last_seconds) * 1000));
         }
-
         pdu_len = datalink_receive(&src, &Rx_Buf[0], MAX_MPDU, timeout);
         if (pdu_len) {
             npdu_handler(&src, &Rx_Buf[0], pdu_len);
@@ -1510,20 +1510,16 @@ int main(int argc, char *argv[])
     Property_List_Index = 0;
 
     for (int i = 0; i < 6; i++) {
-        Error_Detected = false;
-        /* Update times; aids single-step debugging */
-        last_seconds = current_seconds;
-        elapsed_seconds = 0;
-
         Request_Invoke_ID =
             Read_Properties_01(Target_Device_Object_Instance, &myObject);
-
+        // usleep(1000);
         pdu_len = datalink_receive(&src, &Rx_Buf[0], MAX_MPDU, timeout);
-
+        
         /* process */
         if (pdu_len) {
             npdu_handler(&src, &Rx_Buf[0], pdu_len);
         }
+
         Property_Value_List[i].value =
             Read_Property_Multiple_Data.rpm_data->listOfProperties->value;
         Property_List_Index++;
@@ -1562,7 +1558,7 @@ int main(int argc, char *argv[])
                     /* Reached the end of the list. */
                     myState = NEXT_OBJECT; /* Move on to the next. */
                 }
-
+                // usleep(1000);
                 pdu_len = datalink_receive(&src, &Rx_Buf[0], MAX_MPDU, timeout);
 
                 /* process */
@@ -1589,7 +1585,7 @@ int main(int argc, char *argv[])
                 /* Reached the end of the list. */
                 myState = NEXT_OBJECT; /* Move on to the next. */
             }
-
+            // usleep(1000);
             pdu_len = datalink_receive(&src, &Rx_Buf[0], MAX_MPDU, timeout);
 
             /* process */
@@ -1631,7 +1627,7 @@ int main(int argc, char *argv[])
                     /* Reached the end of the list. */
                     myState = NEXT_OBJECT; /* Move on to the next. */
                 }
-
+                // usleep(1000);
                 pdu_len = datalink_receive(&src, &Rx_Buf[0], MAX_MPDU, timeout);
 
                 /* process */

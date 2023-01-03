@@ -75,7 +75,7 @@ epics:
 
 .PHONY: epics_own
 epics_own:
-	$(MAKE) -s -C apps $@	
+	$(MAKE) -s -C apps $@
 
 .PHONY: error
 error:
@@ -101,24 +101,12 @@ gateway:
 gateway-win32:
 	$(MAKE) BACNET_PORT=win32 -s -C apps gateway
 
-.PHONY: reinit
-reinit:
-	$(MAKE) -s -C apps $@
-
 .PHONY: readbdt
 readbdt:
 	$(MAKE) -s -C apps $@
 
 .PHONY: readfdt
 readfdt:
-	$(MAKE) -s -C apps $@
-
-.PHONY: readprop
-readprop:
-	$(MAKE) -s -C apps $@
-
-.PHONY: readpropm
-readpropm:
 	$(MAKE) -s -C apps $@
 
 .PHONY: writebdt
@@ -153,16 +141,8 @@ uevent:
 whois:
 	$(MAKE) -s -C apps $@
 
-.PHONY: whoisrouter
-whoisrouter:
-	$(MAKE) -s -C apps $@
-
 .PHONY: writepropm
 writepropm:
-	$(MAKE) -s -C apps $@
-
-.PHONY: writeprop
-writeprop:
 	$(MAKE) -s -C apps $@
 
 .PHONY: router
@@ -293,7 +273,7 @@ cppcheck:
 flawfinder:
 	flawfinder --minlevel 5 --error-level=5 ./src/
 
-IGNORE_WORDS = ba
+IGNORE_WORDS = ba,statics
 CODESPELL_OPTIONS = --write-changes --interactive 3 --enable-colors
 CODESPELL_OPTIONS += --ignore-words-list $(IGNORE_WORDS)
 .PHONY: codespell

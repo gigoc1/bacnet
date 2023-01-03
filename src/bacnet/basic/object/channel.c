@@ -657,6 +657,7 @@ int Channel_Value_Encode(
 {
     int apdu_len = BACNET_STATUS_ERROR;
 
+    (void)apdu_max;
     if (!apdu || !value) {
         return BACNET_STATUS_ERROR;
     }
@@ -907,7 +908,7 @@ int Channel_Coerce_Data_Encode(uint8_t *apdu,
 #if defined(BACAPP_REAL)
             case BACNET_APPLICATION_TAG_REAL:
                 if (tag == BACNET_APPLICATION_TAG_BOOLEAN) {
-                    if (value->type.Real != 0.0F) {
+                    if (islessgreater(value->type.Real, 0.0F)) {
                         boolean_value = true;
                     }
                     apdu_len =
@@ -954,7 +955,7 @@ int Channel_Coerce_Data_Encode(uint8_t *apdu,
 #if defined(BACAPP_DOUBLE)
             case BACNET_APPLICATION_TAG_DOUBLE:
                 if (tag == BACNET_APPLICATION_TAG_BOOLEAN) {
-                    if (value->type.Double != 0.0) {
+                    if (islessgreater(value->type.Double, 0.0)) {
                         boolean_value = true;
                     }
                     apdu_len =
@@ -1513,34 +1514,34 @@ bool Channel_Write_Property(BACNET_WRITE_PROPERTY_DATA *wp_data)
             status = Channel_Present_Value_Set(wp_data, &value);
             break;
         case PROP_OUT_OF_SERVICE:
-            status = write_property_type_valid(wp_data, &value,
-                BACNET_APPLICATION_TAG_BOOLEAN);
+            status = write_property_type_valid(
+                wp_data, &value, BACNET_APPLICATION_TAG_BOOLEAN);
             if (status) {
                 Channel_Out_Of_Service_Set(
                     wp_data->object_instance, value.type.Boolean);
             }
             break;
         case PROP_LIST_OF_OBJECT_PROPERTY_REFERENCES:
-            // FIXME: add property handling
-            //            status =
-            //            Channel_List_Of_Object_Property_References_Set(
-            //                wp_data,
-            //                &value);
+            /* FIXME: add property handling */
+            /*            status = */
+            /*            Channel_List_Of_Object_Property_References_Set( */
+            /*                wp_data, */
+            /*                &value); */
             wp_data->error_class = ERROR_CLASS_PROPERTY;
             wp_data->error_code =
                 ERROR_CODE_OPTIONAL_FUNCTIONALITY_NOT_SUPPORTED;
             break;
         case PROP_CHANNEL_NUMBER:
-            status = write_property_type_valid(wp_data, &value,
-                BACNET_APPLICATION_TAG_UNSIGNED_INT);
+            status = write_property_type_valid(
+                wp_data, &value, BACNET_APPLICATION_TAG_UNSIGNED_INT);
             if (status) {
                 Channel_Number_Set(
                     wp_data->object_instance, value.type.Unsigned_Int);
             }
             break;
         case PROP_CONTROL_GROUPS:
-            status = write_property_type_valid(wp_data, &value,
-                BACNET_APPLICATION_TAG_UNSIGNED_INT);
+            status = write_property_type_valid(
+                wp_data, &value, BACNET_APPLICATION_TAG_UNSIGNED_INT);
             if (status) {
                 if (wp_data->array_index == 0) {
                     /* Array element zero is the number of elements in the array

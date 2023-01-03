@@ -93,10 +93,32 @@ endif
 BACNET_PORT_DIR =  $(realpath ../ports/$(BACNET_PORT))
 BACNET_SRC_DIR =  $(realpath ../src)
 
+# Compiler flag to set the C Standard level.
+# c89   - "ANSI" C - ISO C90
+# gnu89 - c89 plus GNU extensions
+# c90   - "ANSI" C - ISO C90
+# gnu90 - C90 with GNU extensions
+# c99   - ISO C99 standard
+# gnu99 - C99 plus GNU extensions
+# c11   - C11
+# gnu11 - C11 plus GNU extensions
+# c17   - C11 with corrections
+# note: default is compiled as ANSI C for widest compiler compatibilty
+# note: code that requires newer language features must use __STDC_VERSION__
+CSTANDARD ?= -std=gnu99
+
 #build for release (default) or debug
 OPTIMIZATION ?= -Os
-DEBUGGING ?= -g
-WARNINGS ?= -Wall -Wmissing-prototypes
+DEBUGGING ?=
+WARNING_ALL := -Wall -Wextra -Wall -Wfloat-equal -Wconversion -Wparentheses
+WARNING_ALL += -pedantic -Wunused-parameter -Wunused-variable -Wreturn-type
+WARNING_ALL += -Wunused-function -Wreturn-type -Wunused-value
+WARNING_ALL += -Wswitch-default -Wuninitialized -Winit-self
+WARNING_ALL += -Wno-sign-conversion -Wno-conversion -Wno-sign-compare
+WARNING_ALL += -Wno-long-long
+#WARNING_ALL += -Wredundant-decls
+#WARNING_ALL += -Werror
+WARNINGS ?= $(WARNING_ALL)
 # dead code removal
 ifeq (${BUILD},debug)
 OPTIMIZATION = -O0
@@ -117,6 +139,7 @@ BACNET_DEFINES += -DBACNET_PROTOCOL_REVISION=24
 # put all the flags together
 INCLUDES = -I$(BACNET_SRC_DIR) -I$(BACNET_PORT_DIR)
 CFLAGS += $(WARNINGS) $(DEBUGGING) $(OPTIMIZATION) $(BACNET_DEFINES) $(INCLUDES)
+CFLAGS += $(CSTANDARD)
 ifneq (${BACNET_LIB},)
 LFLAGS += -Wl,$(BACNET_LIB)
 endif
@@ -289,10 +312,6 @@ uevent: $(BACNET_LIB_TARGET)
 whois: $(BACNET_LIB_TARGET)
 	$(MAKE) -b -C $@
 
-.PHONY: whoisrouter
-whoisrouter: $(BACNET_LIB_TARGET)
-	$(MAKE) -b -C $@
-
 .PHONY: writebdt
 writebdt: $(BACNET_LIB_TARGET)
 	$(MAKE) -b -C $@
@@ -315,9 +334,5 @@ router-mstp: $(BACNET_LIB_TARGET)
 
 .PHONY: writepropm
 writepropm: $(BACNET_LIB_TARGET)
-	$(MAKE) -b -C $@
-
-.PHONY: writeprop
-writeprop: $(BACNET_LIB_TARGET)
 	$(MAKE) -b -C $@
 

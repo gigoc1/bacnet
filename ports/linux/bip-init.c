@@ -95,16 +95,25 @@ static void debug_print_ipv4(const char *str,
     }
 }
 
-
 /**
  * @brief Return the active BIP socket.
  * @return The active BIP socket, or -1 if uninitialized.
+ * @see bip_get_broadcast_socket
  */
 int bip_get_socket(void)
 {
     return BIP_Socket;
 }
 
+/**
+ * @brief Return the active BIP Broadcast socket.
+ * @return The active BIP Broadcast socket, or -1 if uninitialized.
+ * @see bip_get_socket
+ */
+int bip_get_broadcast_socket(void)
+{
+    return BIP_Broadcast_Socket;
+}
 
 /**
  * @brief Enabled debug printing of BACnet/IPv4
@@ -195,6 +204,7 @@ void bip_get_broadcast_address(BACNET_ADDRESS *dest)
 bool bip_set_addr(BACNET_IP_ADDRESS *addr)
 {
     /* not something we do within this driver */
+    (void)addr;
     return false;
 }
 
@@ -221,6 +231,7 @@ bool bip_get_addr(BACNET_IP_ADDRESS *addr)
 bool bip_set_broadcast_addr(BACNET_IP_ADDRESS *addr)
 {
     /* not something we do within this driver */
+    (void)addr;
     return false;
 }
 
@@ -246,6 +257,7 @@ bool bip_get_broadcast_addr(BACNET_IP_ADDRESS *addr)
 bool bip_set_subnet_prefix(uint8_t prefix)
 {
     /* not something we do within this driver */
+    (void)prefix;
     return false;
 }
 
@@ -327,7 +339,7 @@ uint16_t bip_receive(
     int max = 0;
     struct timeval select_timeout;
     struct sockaddr_in sin = { 0 };
-    BACNET_IP_ADDRESS addr = { { 0 } };
+    BACNET_IP_ADDRESS addr = { 0 };
     socklen_t sin_len = sizeof(sin);
     int received_bytes = 0;
     int offset = 0;
@@ -647,6 +659,8 @@ static void parseRoutes(struct nlmsghdr *nlHdr, struct route_info *rtInfo)
                 break;
             case RTA_DST:
                 rtInfo->dstAddr = *(u_int *)RTA_DATA(rtAttr);
+                break;
+            default:
                 break;
         }
     }

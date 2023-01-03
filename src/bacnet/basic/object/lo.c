@@ -82,7 +82,11 @@ static const int Lighting_Output_Properties_Required[] = {
     PROP_BLINK_WARN_ENABLE, PROP_EGRESS_TIME, PROP_EGRESS_ACTIVE,
     PROP_DEFAULT_FADE_TIME, PROP_DEFAULT_RAMP_RATE, PROP_DEFAULT_STEP_INCREMENT,
     PROP_PRIORITY_ARRAY, PROP_RELINQUISH_DEFAULT,
-    PROP_LIGHTING_COMMAND_DEFAULT_PRIORITY, -1
+    PROP_LIGHTING_COMMAND_DEFAULT_PRIORITY,
+#if (BACNET_PROTOCOL_REVISION >= 17)
+    PROP_CURRENT_COMMAND_PRIORITY,
+#endif
+    -1
 };
 static const int Lighting_Output_Properties_Optional[] = { -1 };
 
@@ -394,10 +398,10 @@ bool Lighting_Output_Lighting_Command_Set(
 
     index = Lighting_Output_Instance_To_Index(object_instance);
     if (index < MAX_LIGHTING_OUTPUTS) {
-        // FIXME: check lighting command member values
+        /* FIXME: check lighting command member values */
         status = lighting_command_copy(
             &Lighting_Output[index].Lighting_Command, value);
-        // FIXME: set all the other values, and get the light levels moving
+        /* FIXME: set all the other values, and get the light levels moving */
     }
 
     return status;
@@ -1060,6 +1064,16 @@ int Lighting_Output_Read_Property(BACNET_READ_PROPERTY_DATA *rpdata)
                 Lighting_Output_Default_Priority(rpdata->object_instance);
             apdu_len = encode_application_unsigned(&apdu[0], unsigned_value);
             break;
+#if (BACNET_PROTOCOL_REVISION >= 17)
+        case PROP_CURRENT_COMMAND_PRIORITY:
+            i = Lighting_Output_Present_Value_Priority(rpdata->object_instance);
+            if ((i >= BACNET_MIN_PRIORITY) && (i <= BACNET_MAX_PRIORITY)) {
+                apdu_len = encode_application_unsigned(&apdu[0], i);
+            } else {
+                apdu_len = encode_application_null(&apdu[0]);
+            }
+            break;
+#endif
         default:
             rpdata->error_class = ERROR_CLASS_PROPERTY;
             rpdata->error_code = ERROR_CODE_UNKNOWN_PROPERTY;
@@ -1111,8 +1125,8 @@ bool Lighting_Output_Write_Property(BACNET_WRITE_PROPERTY_DATA *wp_data)
     }
     switch (wp_data->object_property) {
         case PROP_PRESENT_VALUE:
-            status = write_property_type_valid(wp_data, &value,
-                BACNET_APPLICATION_TAG_REAL);
+            status = write_property_type_valid(
+                wp_data, &value, BACNET_APPLICATION_TAG_REAL);
             if (status) {
                 /* Command priority 6 is reserved for use by Minimum On/Off
                    algorithm and may not be used for other purposes in any
@@ -1131,8 +1145,8 @@ bool Lighting_Output_Write_Property(BACNET_WRITE_PROPERTY_DATA *wp_data)
                     wp_data->error_code = ERROR_CODE_VALUE_OUT_OF_RANGE;
                 }
             } else {
-                status = write_property_type_valid(wp_data, &value,
-                    BACNET_APPLICATION_TAG_NULL);
+                status = write_property_type_valid(
+                    wp_data, &value, BACNET_APPLICATION_TAG_NULL);
                 if (status) {
                     if (wp_data->priority == 6) {
                         /* Command priority 6 is reserved for use by Minimum
@@ -1154,8 +1168,8 @@ bool Lighting_Output_Write_Property(BACNET_WRITE_PROPERTY_DATA *wp_data)
             }
             break;
         case PROP_LIGHTING_COMMAND:
-            status = write_property_type_valid(wp_data, &value,
-                BACNET_APPLICATION_TAG_LIGHTING_COMMAND);
+            status = write_property_type_valid(
+                wp_data, &value, BACNET_APPLICATION_TAG_LIGHTING_COMMAND);
             if (status) {
                 status = Lighting_Output_Lighting_Command_Set(
                     wp_data->object_instance, &value.type.Lighting_Command);
@@ -1166,8 +1180,8 @@ bool Lighting_Output_Write_Property(BACNET_WRITE_PROPERTY_DATA *wp_data)
             }
             break;
         case PROP_OUT_OF_SERVICE:
-            status = write_property_type_valid(wp_data, &value,
-                BACNET_APPLICATION_TAG_BOOLEAN);
+            status = write_property_type_valid(
+                wp_data, &value, BACNET_APPLICATION_TAG_BOOLEAN);
             if (status) {
                 Lighting_Output_Out_Of_Service_Set(
                     wp_data->object_instance, value.type.Boolean);
@@ -1187,6 +1201,9 @@ bool Lighting_Output_Write_Property(BACNET_WRITE_PROPERTY_DATA *wp_data)
         case PROP_DEFAULT_STEP_INCREMENT:
         case PROP_PRIORITY_ARRAY:
         case PROP_RELINQUISH_DEFAULT:
+#if (BACNET_PROTOCOL_REVISION >= 17)
+        case PROP_CURRENT_COMMAND_PRIORITY:
+#endif
             wp_data->error_class = ERROR_CLASS_PROPERTY;
             wp_data->error_code = ERROR_CODE_WRITE_ACCESS_DENIED;
             break;
@@ -1211,7 +1228,12 @@ static void Lighting_Output_Ramp_Handler(struct lighting_output_object *pLight,
     BACNET_LIGHTING_COMMAND *pCommand,
     uint16_t milliseconds)
 {
-    if (pLight && pCommand) { }
+    if (pLight && pCommand) {
+        /* FIXME: add ramp functionality */ 
+        (void)pLight;
+        (void)pCommand;
+        (void)milliseconds;
+    }
 }
 
 /**
@@ -1226,7 +1248,12 @@ static void Lighting_Output_Fade_Handler(struct lighting_output_object *pLight,
     BACNET_LIGHTING_COMMAND *pCommand,
     uint16_t milliseconds)
 {
-    if (pLight && pCommand) { }
+    if (pLight && pCommand) { 
+        /* FIXME: add fade functionality */ 
+        (void)pLight;
+        (void)pCommand;
+        (void)milliseconds;        
+    }
 }
 
 /**
