@@ -119,7 +119,7 @@ BACNET_SRC_DIR =  $(realpath ../src)
 # c17   - C11 with corrections
 # note: default is compiled as ANSI C for widest compiler compatibilty
 # note: code that requires newer language features must use __STDC_VERSION__
-CSTANDARD ?= -std=gnu89
+CSTANDARD ?= -std=gnu99
 
 #build for release (default) or debug
 OPTIMIZATION ?= -Os
