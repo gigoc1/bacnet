@@ -211,6 +211,7 @@ BACNET_BINARY_PV Binary_Output_Present_Value(uint32_t object_instance)
 }
 
 /**
+<<<<<<< HEAD
  * For a given object instance-number, determines the value at a
  * given priority.
  *
@@ -234,13 +235,41 @@ static BACNET_BINARY_PV Binary_Output_Priority_Array_Value(
             } else {
                 value = BINARY_INACTIVE;
             }
+=======
+ * @brief Encode a BACnetARRAY property element
+ * @param object_instance [in] BACnet network port object instance number
+ * @param index [in] array index requested:
+ *    0 to N for individual array members
+ * @param apdu [out] Buffer in which the APDU contents are built, or NULL to
+ * return the length of buffer if it had been built
+ * @return The length of the apdu encoded or
+ *   BACNET_STATUS_ERROR for ERROR_CODE_INVALID_ARRAY_INDEX
+ */
+static int Binary_Output_Priority_Array_Encode(
+    uint32_t object_instance, BACNET_ARRAY_INDEX index, uint8_t *apdu)
+{
+    int apdu_len = BACNET_STATUS_ERROR;
+    struct object_data *pObject;
+    BACNET_BINARY_PV value = BINARY_INACTIVE;
+
+    pObject = Keylist_Data(Object_List, object_instance);
+    if (pObject && (index < BACNET_MAX_PRIORITY)) {
+        if (BIT_CHECK(pObject->Priority_Active_Bits, index)) {
+            if (BIT_CHECK(pObject->Priority_Array, index)) {
+                value = BINARY_ACTIVE;
+            }
+            apdu_len = encode_application_enumerated(apdu, value);
+        } else {
+            apdu_len = encode_application_null(apdu);
+>>>>>>> ced9dff0f289e780023bc0d0173e41d2a3ca825e
         }
     }
 
-    return value;
+    return apdu_len;
 }
 
 /**
+<<<<<<< HEAD
  * For a given object instance-number, determines if the given priority
  * is active or NULL.
  *
@@ -253,13 +282,67 @@ static bool Binary_Output_Priority_Active(
     uint32_t object_instance, unsigned priority)
 {
     bool status = false;
+=======
+ * For a given object instance-number, determines the active priority
+ *
+ * @param  object_instance - object-instance number of the object
+ *
+ * @return  active priority 1..16, or 0 if no priority is active
+ */
+unsigned Binary_Output_Present_Value_Priority(uint32_t object_instance)
+{
+    unsigned p = 0; /* loop counter */
+    unsigned priority = 0; /* return value */
+>>>>>>> ced9dff0f289e780023bc0d0173e41d2a3ca825e
     struct object_data *pObject;
 
     pObject = Keylist_Data(Object_List, object_instance);
     if (pObject) {
+<<<<<<< HEAD
         if (priority && (priority <= BACNET_MAX_PRIORITY)) {
             priority--;
             if (BIT_CHECK(pObject->Priority_Active_Bits, priority)) {
+=======
+        for (p = 0; p < BACNET_MAX_PRIORITY; p++) {
+            if (BIT_CHECK(pObject->Priority_Active_Bits, p)) {
+                priority = p + 1;
+                break;
+            }
+        }
+    }
+
+    return priority;
+}
+
+/**
+ * For a given object instance-number, sets the present-value at a given
+ * priority 1..16.
+ *
+ * @param  object_instance - object-instance number of the object
+ * @param  value - enumerated 2-state active or inactive value
+ * @param  priority - priority 1..16
+ *
+ * @return  true if values are within range and present-value is set.
+ */
+bool Binary_Output_Present_Value_Set(
+    uint32_t object_instance, BACNET_BINARY_PV binary_value, unsigned priority)
+{
+    bool status = false;
+    struct object_data *pObject;
+
+    pObject = Keylist_Data(Object_List, object_instance);
+    if (pObject) {
+        if (priority && (priority <= BACNET_MAX_PRIORITY) &&
+            (priority != 6 /* reserved */)) {
+            priority--;
+            if (binary_value <= MAX_BINARY_PV) {
+                BIT_SET(pObject->Priority_Active_Bits, priority);
+                if (binary_value == BINARY_ACTIVE) {
+                    BIT_SET(pObject->Priority_Array, priority);
+                } else {
+                    BIT_CLEAR(pObject->Priority_Array, priority);
+                }
+>>>>>>> ced9dff0f289e780023bc0d0173e41d2a3ca825e
                 status = true;
             }
         }
@@ -269,6 +352,7 @@ static bool Binary_Output_Priority_Active(
 }
 
 /**
+<<<<<<< HEAD
  * For a given object instance-number, determines the active priority
  *
  * @param  object_instance - object-instance number of the object
@@ -331,6 +415,8 @@ bool Binary_Output_Present_Value_Set(
 }
 
 /**
+=======
+>>>>>>> ced9dff0f289e780023bc0d0173e41d2a3ca825e
  * For a given object instance-number, relinquishes the present-value
  * at a given priority 1..16.
  *
@@ -369,8 +455,14 @@ bool Binary_Output_Present_Value_Relinquish(
  * @param  error_code - BACnet Error code
  * @return  true if values are within range and present-value is set.
  */
+<<<<<<< HEAD
 static bool Binary_Output_Present_Value_Write(
     uint32_t object_instance, BACNET_BINARY_PV value, uint8_t priority,
+=======
+static bool Binary_Output_Present_Value_Write(uint32_t object_instance,
+    BACNET_BINARY_PV value,
+    uint8_t priority,
+>>>>>>> ced9dff0f289e780023bc0d0173e41d2a3ca825e
     BACNET_ERROR_CLASS *error_class,
     BACNET_ERROR_CODE *error_code)
 {
@@ -382,11 +474,19 @@ static bool Binary_Output_Present_Value_Write(
     pObject = Keylist_Data(Object_List, object_instance);
     if (pObject) {
         if ((priority >= 1) && (priority <= BACNET_MAX_PRIORITY) &&
+<<<<<<< HEAD
             (value >= 0.0) && (value <= 100.0)) {
             if (priority != 6) {
                 old_value = Binary_Output_Present_Value(object_instance);
                 Binary_Output_Present_Value_Set(object_instance, value,
                     priority);
+=======
+            (value <= MAX_BINARY_PV)) {
+            if (priority != 6) {
+                old_value = Binary_Output_Present_Value(object_instance);
+                Binary_Output_Present_Value_Set(
+                    object_instance, value, priority);
+>>>>>>> ced9dff0f289e780023bc0d0173e41d2a3ca825e
                 if (pObject->Out_Of_Service) {
                     /* The physical point that the object represents
                         is not in service. This means that changes to the
@@ -425,7 +525,12 @@ static bool Binary_Output_Present_Value_Write(
  * @return  true if values are within range and write is requested
  */
 static bool Binary_Output_Present_Value_Relinquish_Write(
+<<<<<<< HEAD
     uint32_t object_instance, uint8_t priority,
+=======
+    uint32_t object_instance,
+    uint8_t priority,
+>>>>>>> ced9dff0f289e780023bc0d0173e41d2a3ca825e
     BACNET_ERROR_CLASS *error_class,
     BACNET_ERROR_CODE *error_code)
 {
@@ -439,7 +544,12 @@ static bool Binary_Output_Present_Value_Relinquish_Write(
         if ((priority >= 1) && (priority <= BACNET_MAX_PRIORITY)) {
             if (priority != 6) {
                 old_value = Binary_Output_Present_Value(object_instance);
+<<<<<<< HEAD
                 Binary_Output_Present_Value_Relinquish(object_instance, priority);
+=======
+                Binary_Output_Present_Value_Relinquish(
+                    object_instance, priority);
+>>>>>>> ced9dff0f289e780023bc0d0173e41d2a3ca825e
                 if (pObject->Out_Of_Service) {
                     /* The physical point that the object represents
                         is not in service. This means that changes to the
@@ -530,8 +640,13 @@ bool Binary_Output_Object_Name(
     pObject = Keylist_Data(Object_List, object_instance);
     if (pObject) {
         if (pObject->Object_Name) {
+<<<<<<< HEAD
             status = characterstring_init_ansi(object_name,
                 pObject->Object_Name);
+=======
+            status =
+                characterstring_init_ansi(object_name, pObject->Object_Name);
+>>>>>>> ced9dff0f289e780023bc0d0173e41d2a3ca825e
         } else {
             snprintf(name_text, sizeof(name_text), "BINARY OUTPUT %u",
                 object_instance);
@@ -973,7 +1088,6 @@ bool Binary_Output_Encode_Value_List(
  */
 int Binary_Output_Read_Property(BACNET_READ_PROPERTY_DATA *rpdata)
 {
-    int len = 0;
     int apdu_len = 0; /* return value */
     BACNET_BIT_STRING bit_string;
     BACNET_CHARACTER_STRING char_string;
@@ -982,12 +1096,14 @@ int Binary_Output_Read_Property(BACNET_READ_PROPERTY_DATA *rpdata)
     unsigned i = 0;
     bool state = false;
     uint8_t *apdu = NULL;
+    int apdu_size = 0;
 
     if ((rpdata->application_data == NULL) ||
         (rpdata->application_data_len == 0)) {
         return 0;
     }
     apdu = rpdata->application_data;
+    apdu_size = rpdata->application_data_len;
     switch (rpdata->object_property) {
         case PROP_OBJECT_IDENTIFIER:
             apdu_len = encode_application_object_id(
@@ -999,8 +1115,12 @@ int Binary_Output_Read_Property(BACNET_READ_PROPERTY_DATA *rpdata)
                 encode_application_character_string(&apdu[0], &char_string);
             break;
         case PROP_OBJECT_TYPE:
+<<<<<<< HEAD
             apdu_len =
                 encode_application_enumerated(&apdu[0], Object_Type);
+=======
+            apdu_len = encode_application_enumerated(&apdu[0], Object_Type);
+>>>>>>> ced9dff0f289e780023bc0d0173e41d2a3ca825e
             break;
         case PROP_PRESENT_VALUE:
             present_value =
@@ -1035,6 +1155,7 @@ int Binary_Output_Read_Property(BACNET_READ_PROPERTY_DATA *rpdata)
             apdu_len = encode_application_enumerated(&apdu[0], polarity);
             break;
         case PROP_PRIORITY_ARRAY:
+<<<<<<< HEAD
             /* Array element zero is the number of elements in the array */
             if (rpdata->array_index == 0) {
                 apdu_len =
@@ -1079,6 +1200,17 @@ int Binary_Output_Read_Property(BACNET_READ_PROPERTY_DATA *rpdata)
                     rpdata->error_code = ERROR_CODE_INVALID_ARRAY_INDEX;
                     apdu_len = BACNET_STATUS_ERROR;
                 }
+=======
+            apdu_len = bacnet_array_encode(rpdata->object_instance,
+                rpdata->array_index, Binary_Output_Priority_Array_Encode,
+                BACNET_MAX_PRIORITY, apdu, apdu_size);
+            if (apdu_len == BACNET_STATUS_ABORT) {
+                rpdata->error_code =
+                    ERROR_CODE_ABORT_SEGMENTATION_NOT_SUPPORTED;
+            } else if (apdu_len == BACNET_STATUS_ERROR) {
+                rpdata->error_class = ERROR_CLASS_PROPERTY;
+                rpdata->error_code = ERROR_CODE_INVALID_ARRAY_INDEX;
+>>>>>>> ced9dff0f289e780023bc0d0173e41d2a3ca825e
             }
             break;
         case PROP_RELINQUISH_DEFAULT:
@@ -1165,16 +1297,16 @@ bool Binary_Output_Write_Property(BACNET_WRITE_PROPERTY_DATA *wp_data)
     }
     switch (wp_data->object_property) {
         case PROP_PRESENT_VALUE:
-            status = write_property_type_valid(wp_data, &value,
-                BACNET_APPLICATION_TAG_ENUMERATED);
+            status = write_property_type_valid(
+                wp_data, &value, BACNET_APPLICATION_TAG_ENUMERATED);
             if (status) {
                 status =
                     Binary_Output_Present_Value_Write(wp_data->object_instance,
                         value.type.Enumerated, wp_data->priority,
                         &wp_data->error_class, &wp_data->error_code);
             } else {
-                status = write_property_type_valid(wp_data, &value,
-                    BACNET_APPLICATION_TAG_NULL);
+                status = write_property_type_valid(
+                    wp_data, &value, BACNET_APPLICATION_TAG_NULL);
                 if (status) {
                     status = Binary_Output_Present_Value_Relinquish_Write(
                         wp_data->object_instance, wp_data->priority,
@@ -1183,8 +1315,8 @@ bool Binary_Output_Write_Property(BACNET_WRITE_PROPERTY_DATA *wp_data)
             }
             break;
         case PROP_OUT_OF_SERVICE:
-            status = write_property_type_valid(wp_data, &value,
-                BACNET_APPLICATION_TAG_BOOLEAN);
+            status = write_property_type_valid(
+                wp_data, &value, BACNET_APPLICATION_TAG_BOOLEAN);
             if (status) {
                 Binary_Output_Out_Of_Service_Set(
                     wp_data->object_instance, value.type.Boolean);

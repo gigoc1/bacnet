@@ -35,9 +35,13 @@
 
 # if defined(WIN32) || defined(WIN64)
 #  define strcasecmp _stricmp
+#elif defined(__ZEPHYR__)
+#  include <strings.h>
 # endif
 
-#if defined(__GNUC__)
+#if defined(__MINGW32__)
+#define BACNET_STACK_FALLTHROUGH() /* fall through */
+#elif defined(__GNUC__)
 #define BACNET_STACK_FALLTHROUGH() __attribute__ ((fallthrough))
 #else 
 #define BACNET_STACK_FALLTHROUGH() /* fall through */
