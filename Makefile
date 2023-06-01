@@ -113,6 +113,10 @@ readbdt:
 readfdt:
 	$(MAKE) -s -C apps $@
 
+.PHONY: readprop
+readprop:
+	$(MAKE) -s -C apps $@
+
 .PHONY: remove-list-element
 remove-list-element:
 	$(MAKE) -s -C apps $@

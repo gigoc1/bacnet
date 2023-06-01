@@ -17,8 +17,8 @@ endif
 
 # These might be already defined in an previous Makefile
 BACNET_PORT ?= linux
-BACNET_SRC_DIR ?= $(realpath .)
-BACNET_PORT_DIR ?= $(realpath ../ports/$(BACNET_PORT))
+BACNET_SRC_DIR ?= $(abspath .)
+BACNET_PORT_DIR ?= $(abspath ../ports/$(BACNET_PORT))
 BACNET_PORT_SRC ?= \
 	$(BACNET_PORT_DIR)/bip-init.c \
 	$(BACNET_SRC_DIR)/bacnet/datalink/bvlc.c \

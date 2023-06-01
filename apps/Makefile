@@ -11,7 +11,7 @@
 BACNET_DEFINES ?=
 
 # BACnet Library
-BACNET_LIB_DIR = $(realpath ./lib)
+BACNET_LIB_DIR = $(abspath ./lib)
 BACNET_LIB_NAME = bacnet
 BACNET_LIB_TARGET = $(BACNET_LIB_DIR)/lib$(BACNET_LIB_NAME).a
 BACNET_LIB ?= -L$(BACNET_LIB_DIR),-l$(BACNET_LIB_NAME)
@@ -106,8 +106,8 @@ BACNET_DEFINES += -D_NO_OLDNAMES
 endif
 
 # source file locations
-BACNET_PORT_DIR =  $(realpath ../ports/$(BACNET_PORT))
-BACNET_SRC_DIR =  $(realpath ../src)
+BACNET_PORT_DIR =  $(abspath ../ports/$(BACNET_PORT))
+BACNET_SRC_DIR =  $(abspath ../src)
 
 # Compiler flag to set the C Standard level.
 # c89   - "ANSI" C - ISO C90

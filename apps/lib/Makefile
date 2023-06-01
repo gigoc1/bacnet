@@ -2,10 +2,10 @@
 # Build all the non-OS or port specific code
 
 BACNET_LIB_NAME ?= bacnet
-BACNET_LIB_DIR ?= $(realpath .)
+BACNET_LIB_DIR ?= $(abspath .)
 BACNET_LIB_TARGET ?= $(BACNET_LIB_DIR)/lib$(BACNET_LIB_NAME).a
-BACNET_SRC_DIR ?= $(realpath ../../src)
-BACNET_PORT_DIR ?= $(realpath ../../ports/linux)
+BACNET_SRC_DIR ?= $(abspath ../../src)
+BACNET_PORT_DIR ?= $(abspath ../../ports/linux)
 BACNET_DEFINES ?=
 
 #build for release (default) or debug

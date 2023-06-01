@@ -1460,7 +1460,7 @@ int main(int argc, char *argv[])
     myObject.instance = Target_Device_Object_Instance;
     myState = INITIAL_BINDING;
     
-    //1. INIT IAL_BINDING
+    //1. INITIAL_BINDING
     do {
         /* increment timer - will exit if timed out */
         last_seconds = current_seconds;
@@ -1602,17 +1602,23 @@ int main(int argc, char *argv[])
                 BACNET_APPLICATION_DATA_VALUE *value, *old_value;
                 value = Read_Property_Multiple_Data.rpm_data->listOfProperties
                             ->value;
-
+                printf("    property-list: {");  //property-list 인쇄 부분
+                int cnt=1;
                 while (value != NULL) {
                     Property_List[Property_List_Index] = value->type.Enumerated;
                     old_value = value;
                     value = value->next; /* next or NULL */
                     free(old_value);
-                    // printf("%d, ", Property_List[Property_List_Index]);
+                    // printf("%d, ", Property_List[Property_List_Index]); property_list의 번호 출력시 사용
+                    Print_Property_Identifier(Property_List[Property_List_Index]);  // Property_list 출력
                     // property list 확인 용
+                    if (cnt%4 == 0) printf(",\n    ");
+                    else printf(", ");
+                    cnt++;
                     Property_List_Index++;
                     if (value == NULL) {
                         Property_List[Property_List_Index] = -1;
+                        printf("}\n");
                     }
                 }
             }

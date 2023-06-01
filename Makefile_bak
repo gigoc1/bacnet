@@ -1,0 +1,3 @@
+get_path:
+	echo $(abspath west.yml)
+	echo $(abspath west.yml)

@@ -14,13 +14,13 @@ rem doskey make = mingw32-make.exe $*
 
 rem Build for Mingw IP
 rem mingw32-make BACNET_PORT=win32 clean
-rem mingw32-make BACNET_PORT=win32 BUILD=debug %1
+mingw32-make BACNET_PORT=win32 BUILD=debug %1
 
 rem Build for MinGW debug
 rem make BACNET_PORT=win32 BUILD=debug clean all
 
 rem Build for MinGW MS/TP
-mingw32-make BACNET_PORT=win32 BACDL_DEFINE=-DBACDL_MSTP=1 %1
+rem mingw32-make BACNET_PORT=win32 BACDL_DEFINE=-DBACDL_MSTP=1 %1
 rem make BACNET_PORT=win32 BACDL_DEFINE=-DBACDL_BIP6=1 clean all
 
 rem On Linux, install mingw32 and use this:

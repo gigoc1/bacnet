@@ -5,7 +5,7 @@ TARGET = bacgateway
 
 SRC := main.c
 
-BACNET_SRC_DIR ?= $(realpath ../../src)
+BACNET_SRC_DIR ?= $(abspath ../../src)
 BACNET_OBJECT_DIR = $(BACNET_SRC_DIR)/bacnet/basic/object
 
 BACNET_OBJECT_SRC := \
