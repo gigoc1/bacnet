@@ -1602,7 +1602,7 @@ int main(int argc, char *argv[])
                 BACNET_APPLICATION_DATA_VALUE *value, *old_value;
                 value = Read_Property_Multiple_Data.rpm_data->listOfProperties
                             ->value;
-                printf("    property-list: {");  //property-list 인쇄 부분
+                printf("    property-list: {\n      ");  //property-list 인쇄 부분
                 int cnt=1;
                 while (value != NULL) {
                     Property_List[Property_List_Index] = value->type.Enumerated;
@@ -1612,13 +1612,16 @@ int main(int argc, char *argv[])
                     // printf("%d, ", Property_List[Property_List_Index]); property_list의 번호 출력시 사용
                     Print_Property_Identifier(Property_List[Property_List_Index]);  // Property_list 출력
                     // property list 확인 용
-                    if (cnt%4 == 0) printf(",\n    ");
-                    else printf(", ");
-                    cnt++;
+
                     Property_List_Index++;
                     if (value == NULL) {
                         Property_List[Property_List_Index] = -1;
                         printf("}\n");
+                    }
+                    else {
+                        // if (cnt%4 == 0) printf(",\n    ");
+                        printf(",\n      ");
+                        cnt++;
                     }
                 }
             }
