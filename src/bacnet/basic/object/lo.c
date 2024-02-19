@@ -48,10 +48,6 @@
 /* me! */
 #include "bacnet/basic/object/lo.h"
 
-#ifndef MAX_LIGHTING_OUTPUTS
-#define MAX_LIGHTING_OUTPUTS 8
-#endif
-
 struct object_data {
     float Present_Value;
     float Tracking_Value;
@@ -178,7 +174,11 @@ unsigned Lighting_Output_Count(void)
  */
 uint32_t Lighting_Output_Index_To_Instance(unsigned index)
 {
-    return Keylist_Key(Object_List, index);
+    KEY key = UINT32_MAX;
+
+    Keylist_Index_Key(Object_List, index, &key);
+
+    return key;
 }
 
 /**

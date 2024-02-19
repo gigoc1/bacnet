@@ -156,26 +156,29 @@
     defined(BACAPP_DATE) || \
     defined(BACAPP_TIME) || \
     defined(BACAPP_OBJECT_ID) || \
+    defined(BACAPP_DATETIME) || \
+    defined(BACAPP_DATERANGE) || \
+    defined(BACAPP_LIGHTING_COMMAND) || \
+    defined(BACAPP_XY_COLOR) || \
+    defined(BACAPP_COLOR_COMMAND) || \
+    defined(BACAPP_WEEKLY_SCHEDULE) || \
+    defined(BACAPP_CALENDAR_ENTRY) || \
+    defined(BACAPP_SPECIAL_EVENT) || \
+    defined(BACAPP_HOST_N_PORT) || \
+    defined(BACAPP_DEVICE_OBJECT_PROPERTY_REFERENCE) || \
+    defined(BACAPP_DEVICE_OBJECT_REFERENCE) || \
+    defined(BACAPP_OBJECT_PROPERTY_REFERENCE) || \
+    defined(BACAPP_DESTINATION) || \
     defined(BACAPP_TYPES_EXTRA))
 #define BACAPP_ALL
 #endif
 
 #if defined (BACAPP_ALL)
-#define BACAPP_NULL
-#define BACAPP_BOOLEAN
-#define BACAPP_UNSIGNED
-#define BACAPP_SIGNED
-#define BACAPP_REAL
-#define BACAPP_DOUBLE
-#define BACAPP_OCTET_STRING
-#define BACAPP_CHARACTER_STRING
-#define BACAPP_BIT_STRING
-#define BACAPP_ENUMERATED
-#define BACAPP_DATE
-#define BACAPP_TIME
-#define BACAPP_OBJECT_ID
+#define BACAPP_MINIMAL
 #define BACAPP_TYPES_EXTRA
-#elif defined (BACAPP_MINIMAL)
+#endif
+
+#if defined (BACAPP_MINIMAL)
 #define BACAPP_NULL
 #define BACAPP_BOOLEAN
 #define BACAPP_UNSIGNED
@@ -188,6 +191,41 @@
 #define BACAPP_DATE
 #define BACAPP_TIME
 #define BACAPP_OBJECT_ID
+#endif
+
+#if defined (BACAPP_TYPES_EXTRA) 
+#define BACAPP_DOUBLE
+#define BACAPP_TIMESTAMP
+#define BACAPP_DATETIME
+#define BACAPP_DATERANGE
+#define BACAPP_LIGHTING_COMMAND
+#define BACAPP_XY_COLOR
+#define BACAPP_COLOR_COMMAND
+#define BACAPP_WEEKLY_SCHEDULE
+#define BACAPP_CALENDAR_ENTRY
+#define BACAPP_SPECIAL_EVENT
+#define BACAPP_HOST_N_PORT
+#define BACAPP_DEVICE_OBJECT_PROPERTY_REFERENCE
+#define BACAPP_DEVICE_OBJECT_REFERENCE
+#define BACAPP_OBJECT_PROPERTY_REFERENCE
+#define BACAPP_DESTINATION
+#endif
+
+#if defined(BACAPP_DOUBLE) || \
+    defined(BACAPP_DATETIME) || \
+    defined(BACAPP_DATERANGE) || \
+    defined(BACAPP_LIGHTING_COMMAND) || \
+    defined(BACAPP_XY_COLOR) || \
+    defined(BACAPP_COLOR_COMMAND) || \
+    defined(BACAPP_WEEKLY_SCHEDULE) || \
+    defined(BACAPP_CALENDAR_ENTRY) || \
+    defined(BACAPP_SPECIAL_EVENT) || \
+    defined(BACAPP_HOST_N_PORT) || \
+    defined(BACAPP_DEVICE_OBJECT_PROPERTY_REFERENCE) || \
+    defined(BACAPP_DEVICE_OBJECT_REFERENCE) || \
+    defined(BACAPP_OBJECT_PROPERTY_REFERENCE) || \
+    defined(BACAPP_DESTINATION)
+#define BACAPP_COMPLEX_TYPES
 #endif
 
 /*
@@ -215,9 +253,10 @@
 */
 
 /*
-** Note: I've left everything enabled here in the default config.h. You should
-** use a local copy of config.h with settings configured for your needs to
-** make use of any code space reductions in your device.
+** Note: these are enabled by default for the example apps to build. 
+** Use a local copy named "bacnet-config.h" with settings configured for 
+** the product specific needs for code space reductions in your device.
+** Alternately, use a compiler and linker the have code reduction features.
 **/
 
 #define BACNET_SVC_I_HAVE_A    1

@@ -51,8 +51,12 @@
 #include "bacnet/basic/object/ao.h"
 #include "bacnet/basic/object/av.h"
 #include "bacnet/basic/object/bi.h"
+#if (BACNET_PROTOCOL_REVISION >= 16)
+#include "bacnet/basic/object/blo.h"
+#endif
 #include "bacnet/basic/object/bo.h"
 #include "bacnet/basic/object/bv.h"
+#include "bacnet/basic/object/calendar.h"
 #include "bacnet/basic/object/channel.h"
 #include "bacnet/basic/object/command.h"
 #include "bacnet/basic/object/csv.h"
@@ -68,6 +72,7 @@
 #include "bacnet/basic/object/osv.h"
 #include "bacnet/basic/object/piv.h"
 #include "bacnet/basic/object/schedule.h"
+#include "bacnet/basic/object/time_value.h"
 #include "bacnet/basic/object/trendlog.h"
 #if defined(INTRINSIC_REPORTING)
 #include "bacnet/basic/object/nc.h"
@@ -161,6 +166,14 @@ static object_functions_t My_Object_Table[] = {
         NULL /* COV */, NULL /* COV Clear */, NULL /* Intrinsic Reporting */,
         NULL /* Add_List_Element */, NULL /* Remove_List_Element */,
         NULL /* Create */, NULL /* Delete */, NULL /* Timer */ },
+    { OBJECT_CALENDAR, Calendar_Init, Calendar_Count,
+        Calendar_Index_To_Instance, Calendar_Valid_Instance,
+        Calendar_Object_Name, Calendar_Read_Property,
+        Calendar_Write_Property, Calendar_Property_Lists,
+        NULL /* ReadRangeInfo */, NULL /* Iterator */, NULL /* Value_Lists */,
+        NULL /* COV */, NULL /* COV Clear */, NULL /* Intrinsic Reporting */,
+        NULL /* Add_List_Element */, NULL /* Remove_List_Element */,
+        NULL /* Create */, NULL /* Delete */, NULL /* Timer */ },
     { OBJECT_CHARACTERSTRING_VALUE, CharacterString_Value_Init,
         CharacterString_Value_Count, CharacterString_Value_Index_To_Instance,
         CharacterString_Value_Valid_Instance, CharacterString_Value_Object_Name,
@@ -207,7 +220,7 @@ static object_functions_t My_Object_Table[] = {
         NULL /* ReadRangeInfo */, NULL /* Iterator */, NULL /* Value_Lists */,
         NULL /* COV */, NULL /* COV Clear */, NULL /* Intrinsic Reporting */,
         NULL /* Add_List_Element */, NULL /* Remove_List_Element */,
-        NULL /* Create */, NULL /* Delete */, NULL /* Timer */ },
+        Life_Safety_Point_Create, Life_Safety_Point_Delete, NULL /* Timer */ },
     { OBJECT_LOAD_CONTROL, Load_Control_Init, Load_Control_Count,
         Load_Control_Index_To_Instance, Load_Control_Valid_Instance,
         Load_Control_Object_Name, Load_Control_Read_Property,
@@ -267,6 +280,20 @@ static object_functions_t My_Object_Table[] = {
         NULL /* Add_List_Element */, NULL /* Remove_List_Element */,
         Channel_Create, Channel_Delete, NULL /* Timer */ },
 #endif
+#if (BACNET_PROTOCOL_REVISION >= 16)
+    { OBJECT_BINARY_LIGHTING_OUTPUT, Binary_Lighting_Output_Init,
+        Binary_Lighting_Output_Count, Binary_Lighting_Output_Index_To_Instance,
+        Binary_Lighting_Output_Valid_Instance,
+        Binary_Lighting_Output_Object_Name,
+        Binary_Lighting_Output_Read_Property,
+        Binary_Lighting_Output_Write_Property,
+        Binary_Lighting_Output_Property_Lists, NULL /* ReadRangeInfo */,
+        NULL /* Iterator */, NULL /* Value_Lists */, NULL /* COV */,
+        NULL /* COV Clear */, NULL /* Intrinsic Reporting */,
+        NULL /* Add_List_Element */, NULL /* Remove_List_Element */,
+        Binary_Lighting_Output_Create, Binary_Lighting_Output_Delete,
+        Binary_Lighting_Output_Timer },
+#endif
 #if (BACNET_PROTOCOL_REVISION >= 24)
     { OBJECT_COLOR, Color_Init, Color_Count, Color_Index_To_Instance,
         Color_Valid_Instance, Color_Object_Name, Color_Read_Property,
@@ -320,6 +347,14 @@ static object_functions_t My_Object_Table[] = {
         NULL /* Intrinsic Reporting */, NULL /* Add_List_Element */,
         NULL /* Remove_List_Element */, NULL /* Create */, NULL /* Delete */,
         NULL /* Timer */ },
+    { OBJECT_TIME_VALUE, Time_Value_Init, Time_Value_Count,
+        Time_Value_Index_To_Instance, Time_Value_Valid_Instance,
+        Time_Value_Object_Name, Time_Value_Read_Property,
+        Time_Value_Write_Property, Time_Value_Property_Lists,
+        NULL /* ReadRangeInfo */, NULL /* Iterator */, NULL /* Value_Lists */,
+        NULL /* COV */, NULL /* COV Clear */, NULL /* Intrinsic Reporting */,
+        NULL /* Add_List_Element */, NULL /* Remove_List_Element */,
+        NULL /* Create */, NULL /* Delete */, NULL /* Timer */ },
     { OBJECT_ACCUMULATOR, Accumulator_Init, Accumulator_Count,
         Accumulator_Index_To_Instance, Accumulator_Valid_Instance,
         Accumulator_Object_Name, Accumulator_Read_Property,
@@ -2201,12 +2236,14 @@ void Device_Init(object_functions_t *object_table)
         pObject++;
     }
     /* create some dynamically created objects as examples */
-    pObject = Object_Table;
-    while (pObject->Object_Type < MAX_BACNET_OBJECT_TYPE) {
-        if (pObject->Object_Create) {
-            pObject->Object_Create(BACNET_MAX_INSTANCE);
+    if (!object_table) {
+        pObject = Object_Table;
+        while (pObject->Object_Type < MAX_BACNET_OBJECT_TYPE) {
+            if (pObject->Object_Create) {
+                pObject->Object_Create(BACNET_MAX_INSTANCE);
+            }
+            pObject++;
         }
-        pObject++;
     }
 #if (BACNET_PROTOCOL_REVISION >= 14)
     Channel_Write_Property_Internal_Callback_Set(Device_Write_Property);
